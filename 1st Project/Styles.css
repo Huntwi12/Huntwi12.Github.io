@@ -1,0 +1,155 @@
+@import "https://fonts.googleapis.com/css?family=Press%20Start%202P";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body,head {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family: 'Press Start 2P';
+  font-size: 1.1rem;
+  line-height: 2.1;
+  height: 100%;
+  background-color:#3E4E50;
+  text-transform: uppercase;
+}
+a {
+  text-decoration: none;
+  color: #fff090;
+}
+
+li {
+  color: #BE5A38;
+}
+.title {
+    font-size: 1.8rem;
+}
+.arrow i {
+  display: none;
+}
+
+.arrow {
+  position:relative;
+	display: block;
+  color: #C1B4AE;
+}
+
+.arrow:hover {
+  cursor: pointer;
+  background-color:#FACFAD ;
+}
+
+.arrow:hover i { 
+  display: block;
+  position: absolute;
+  top: 0.50em; 
+  left: -6em;
+}
+html {
+    background: #3E4E50;
+    padding: 1em;
+    font-family: 'Press Start 2P', sans-serif;
+    color: #eee;
+    font-size: 1em;
+    line-height: 1;
+    letter-spacing: 0.125em;
+    animation: textflicker 0.1s infinite alternate, crtNoise 0.05s infinite;
+    position: relative;
+}
+
+h1 {
+    font-size: 5em;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+a {
+    color: #ddb75f;
+}
+
+@media screen and (min-width: 1200px) {
+    body {
+        margin-left: 20rem;
+        margin-right: 20rem;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    body {
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+}
+
+@keyframes crtNoise {
+    0% {
+        text-shadow: 
+            1px 0 0 #ea36af, 
+            -2px 0 0 #75fa69;
+    }
+    20% {
+        text-shadow: 
+            0.5px -1px 0.5px #ea36af, 
+            -1px 1px 0.5px #75fa69;
+    }
+    40% {
+        text-shadow: 
+            2px -1px 2px #ea36af, 
+            -2px 0.5px 2px #75fa69;
+    }
+    60% {
+        text-shadow: 
+            1.5px -2px 1px #ea36af, 
+            -1.5px 1px 1px #75fa69;
+    }
+    80% {
+        text-shadow: 
+            1px 1px 1.5px #ea36af, 
+            -2px -0.5px 1.5px #75fa69;
+    }
+    100% {
+        text-shadow: 
+            2px 1px 2px #ea36af, 
+            -1px -1px 2px #75fa69;
+    }
+}
+
+@keyframes textflicker {
+    0% {
+        text-shadow: 
+            1px 0 0 #ea36af, 
+            -2px 0 0 #75fa69;
+    }
+    100% {
+        text-shadow: 
+            2px 0.5px 2px #ea36af, 
+            -1px -0.5px 2px #75fa69;
+    }
+}
+
+html::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 0;
+    animation: scanline 0.1s infinite alternate;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(2px);
+    }
+}

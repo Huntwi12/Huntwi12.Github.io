@@ -58,7 +58,7 @@ window.PorfolioConfig = {
       },
       {
         name: 'Youtube',
-        link: 'https://facebook.com/@Will-fo3sf'
+        link: 'https://youtube.com/@Will-fo3sf'
       },
       {
         name: 'Steam',

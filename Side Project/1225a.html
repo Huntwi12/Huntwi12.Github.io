@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Hot-Dip Aluminizing Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a2530 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,0 L100,0 L100,100 Z" fill="white"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .section h2 i {
+            color: var(--secondary);
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        /* Interactive Elements */
+        .interactive-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .selector-tool {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .selector-question {
+            margin-bottom: 1.5rem;
+        }
+        
+        .selector-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .selector-option {
+            padding: 1rem 1.5rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .selector-option:hover {
+            border-color: var(--secondary);
+            background: #f0f8ff;
+        }
+        
+        .selector-option.selected {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .simulator-result {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Charts */
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        /* Special larger chart container */
+        .large-chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .large-chart-container .chart-wrapper {
+            flex: 1;
+            min-height: 400px;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .selector-options {
+                flex-direction: column;
+            }
+            
+            .selector-option {
+                min-width: 100%;
+            }
+            
+            .large-chart-container {
+                padding: 1rem;
+                min-height: 400px;
+            }
+            
+            .large-chart-container .chart-wrapper {
+                min-height: 300px;
+            }
+        }
+        
+        /* New Section Styles */
+        .case-study {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .failure-analysis {
+            background: #fff5f5;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .atmosphere-detail {
+            background: #f0f7ff;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .spec-detail {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 3px solid var(--success);
+        }
+        
+        .spec-detail h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .warning-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <h2><i class="fas fa-industry"></i> HDA Technical Guide</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#process">Process Analysis</a></li>
+            <li><a href="#atmosphere">Atmosphere Control</a></li>
+            <li><a href="#selector">Material Selector</a></li>
+            <li><a href="#chemistry">Bath Chemistry</a></li>
+            <li><a href="#simulator">Process Simulator</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1>Hot-Dip Aluminizing Technical Guide</h1>
+            <p>Comprehensive reference for carbon & stainless steel gauges .130" to .018" with advanced technical data and interactive tools</p>
+        </header>
+
+        <!-- 1. Enhanced Process Section with Larger Thermal Chart -->
+        <section id="process" class="section">
+            <h2><i class="fas fa-industry"></i> Process Thermal Dynamics Analysis</h2>
+            
+            <div class="large-chart-container">
+                <h3>Thermal Dynamics by Sheet Gauge</h3>
+                <p>This chart shows how optimal bath temperature and dipping time must be adjusted based on sheet thickness to maintain proper intermetallic layer formation (5-8 μm target).</p>
+                <div class="chart-wrapper">
+                    <div id="thermalChart" style="width:100%; height:100%;"></div>
+                </div>
+                <div style="margin-top: 1rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+                    <div>
+                        <div class="metric-label">Thick Gauge (.130") Challenge</div>
+                        <div style="color: #666;">Acts as heat sink, requires higher preheat to prevent premature solidification</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Thin Gauge (.018") Challenge</div>
+                        <div style="color: #666;">Rapid heating risk, requires shorter dip times to prevent excessive intermetallic growth</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Thick Gauge Processing (.090" - .130")</h3>
+                    <p><strong>Thermal Characteristic:</strong> High heat capacity (150-220 kJ/m²·°C)</p>
+                    <p><strong>Preheat Requirement:</strong> 650-700°C minimum surface temperature</p>
+                    <p><strong>Dipping Time:</strong> 12-20 seconds for full diffusion</p>
+                    <p><strong>Cooling Rate:</strong> 15-25°C/second to control layer growth</p>
+                </div>
+                <div class="card">
+                    <h3>Thin Gauge Processing (.018" - .050")</h3>
+                    <p><strong>Thermal Characteristic:</strong> Low heat capacity (25-70 kJ/m²·°C)</p>
+                    <p><strong>Preheat Requirement:</strong> 620-660°C to prevent overheating</p>
+                    <p><strong>Dipping Time:</strong> 3-8 seconds maximum</p>
+                    <p><strong>Cooling Rate:</strong> 40-60°C/second rapid quenching</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Enhanced Atmosphere Control Section -->
+        <section id="atmosphere" class="section">
+            <h2><i class="fas fa-wind"></i> Advanced Atmosphere Control & Gas Effects</h2>
+            
+            <div class="atmosphere-detail">
+                <h3>Critical Furnace Atmosphere Specifications</h3>
+                <p>The preheating furnace atmosphere is crucial for preventing surface oxidation and controlling hydrogen absorption. Even minor deviations can cause coating defects and hydrogen embrittlement.</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Hydrogen Control</h3>
+                        <div class="metric-value">≤ 1000 ppm</div>
+                        <div class="metric-label">Maximum Allowable Concentration</div>
+                        <p><strong>Mechanism:</strong> H₂ dissociates at steel surface → H atoms diffuse into steel matrix</p>
+                        <p><strong>Risk:</strong> Hydrogen embrittlement - loss of ductility, delayed cracking</p>
+                        <p><strong>High-Strength Steels:</strong> Limit to ≤ 500 ppm for grades > 550 MPa</p>
+                        <p><strong>Source Control:</strong> Dry gas supply, leak-free furnace seals</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Oxygen Control</h3>
+                        <div class="metric-value">≤ 10 ppm</div>
+                        <div class="metric-label">Maximum Allowable Concentration</div>
+                        <p><strong>Mechanism:</strong> O₂ reacts with steel surface forming FeO/Fe₂O₃</p>
+                        <p><strong>Risk:</strong> Poor wetting, incomplete bonding, coating discontinuities</p>
+                        <p><strong>Detection:</strong> Zirconia oxygen sensors with 1 ppm resolution</p>
+                        <p><strong>Control:</strong> Positive pressure (2-5 mbar) with nitrogen blanket</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Moisture Control</h3>
+                        <div class="metric-value">≤ -30°C dew point</div>
+                        <div class="metric-label">Equivalent to ~300 ppm H₂O</div>
+                        <p><strong>Mechanism:</strong> H₂O dissociates at high temp: H₂O → H₂ + ½O₂</p>
+                        <p><strong>Double Risk:</strong> Source of both hydrogen AND oxygen</p>
+                        <p><strong>Measurement:</strong> Chilled mirror or electrolytic hygrometers</p>
+                        <p><strong>Drying:</strong> Molecular sieve desiccants, refrigerant dryers</p>
+                    </div>
+                </div>
+                
+                <div class="warning-note">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Hydrogen Embrittlement Warning</h4>
+                    <p>Hydrogen absorption increases exponentially with temperature above 400°C. For high-strength steels (≥ 800 MPa), furnace temperature should be limited to 600°C maximum with hydrogen levels below 300 ppm. Post-coating baking at 200°C for 24 hours can help diffuse out trapped hydrogen.</p>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">Nitrogen-Hydrogen Gas Mixture Optimization</h3>
+                <table class="data-table">
+                    <tr>
+                        <th>N₂-H₂ Ratio</th>
+                        <th>Application</th>
+                        <th>Advantages</th>
+                        <th>Limitations</th>
+                        <th>Steel Type</th>
+                    </tr>
+                    <tr>
+                        <td>95% N₂ - 5% H₂</td>
+                        <td>Standard carbon steel</td>
+                        <td>Good oxide reduction, economical</td>
+                        <td>Risk of H-embrittlement above 600°C</td>
+                        <td>Mild steel, < 275 MPa</td>
+                    </tr>
+                    <tr>
+                        <td>97% N₂ - 3% H₂</td>
+                        <td>High-strength low-alloy</td>
+                        <td>Reduced H-absorption</td>
+                        <td>Less reducing power</td>
+                        <td>HSLA, 275-550 MPa</td>
+                    </tr>
+                    <tr>
+                        <td>99% N₂ - 1% H₂</td>
+                        <td>Advanced high-strength steel</td>
+                        <td>Minimal H-embrittlement risk</td>
+                        <td>Requires excellent furnace sealing</td>
+                        <td>AHSS, > 550 MPa</td>
+                    </tr>
+                    <tr>
+                        <td>100% N₂</td>
+                        <td>Embrittlement-critical applications</td>
+                        <td>Zero hydrogen addition</td>
+                        <td>Possible surface oxidation</td>
+                        <td>All, with flux assistance</td>
+                    </tr>
+                </table>
+                
+                <div class="spec-detail">
+                    <h4><i class="fas fa-flask"></i> Atmosphere Control Best Practices</h4>
+                    <p><strong>1. Continuous Monitoring:</strong> Install redundant O₂ and H₂O analyzers with automatic alarms at 15 ppm O₂ and -25°C dew point.</p>
+                    <p><strong>2. Pressure Control:</strong> Maintain 3-8 mbar positive pressure relative to outside atmosphere to prevent air ingress.</p>
+                    <p><strong>3. Entry/Exit Seals:</strong> Use labyrinth seals with nitrogen curtains at strip entry/exit points.</p>
+                    <p><strong>4. Gas Purity:</strong> Use industrial grade nitrogen (99.995% min) with on-site purification if needed.</p>
+                    <p><strong>5. Leak Testing:</strong> Quarterly pressure decay tests with helium mass spectrometry for leaks < 10⁻⁶ mbar·L/s.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Fixed Material Selector Wizard -->
+        <section id="selector" class="section">
+            <h2><i class="fas fa-cogs"></i> Material Selection Wizard</h2>
+            
+            <div class="selector-tool">
+                <!-- Question 1 -->
+                <div class="selector-question" id="q1">
+                    <h3>1. What is your primary application requirement?</h3>
+                    <div class="selector-options">
+                        <div class="selector-option" data-value="high-temp" onclick="selectWizardOption(1, this, 'high-temp')">
+                            <i class="fas fa-fire"></i> High Temperature (>400°C)
+                        </div>
+                        <div class="selector-option" data-value="corrosion" onclick="selectWizardOption(1, this, 'corrosion')">
+                            <i class="fas fa-umbrella"></i> Corrosion Resistance
+                        </div>
+                        <div class="selector-option" data-value="forming" onclick="selectWizardOption(1, this, 'forming')">
+                            <i class="fas fa-hammer"></i> Severe Forming
+                        </div>
+                        <div class="selector-option" data-value="hydrogen" onclick="selectWizardOption(1, this, 'hydrogen')">
+                            <i class="fas fa-atom"></i> Hydrogen Service
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class="selector-question" id="q2" style="display:none;">
+                    <h3>2. What is your operating environment?</h3>
+                    <div class="selector-options">
+                        <div class="selector-option" data-value="industrial" onclick="selectWizardOption(2, this, 'industrial')">
+                            Industrial Atmosphere (SO₂, acids)
+                        </div>
+                        <div class="selector-option" data-value="marine" onclick="selectWizardOption(2, this, 'marine')">
+                            Marine/Coastal (chlorides)
+                        </div>
+                        <div class="selector-option" data-value="chemical" onclick="selectWizardOption(2, this, 'chemical')">
+                            Chemical Exposure
+                        </div>
+                        <div class="selector-option" data-value="indoor" onclick="selectWizardOption(2, this, 'indoor')">
+                            Indoor/Dry Environment
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 3 -->
+                <div class="selector-question" id="q3" style="display:none;">
+                    <h3>3. What is your steel strength requirement?</h3>
+                    <div class="selector-options">
+                        <div class="selector-option" data-value="mild" onclick="selectWizardOption(3, this, 'mild')">
+                            Mild Steel (< 275 MPa)
+                        </div>
+                        <div class="selector-option" data-value="high-strength" onclick="selectWizardOption(3, this, 'high-strength')">
+                            High Strength (275-550 MPa)
+                        </div>
+                        <div class="selector-option" data-value="advanced" onclick="selectWizardOption(3, this, 'advanced')">
+                            Advanced High Strength (> 550 MPa)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 4 -->
+                <div class="selector-question" id="q4" style="display:none;">
+                    <h3>4. What is your maximum service temperature?</h3>
+                    <div class="selector-options">
+                        <div class="selector-option" data-value="low-temp" onclick="selectWizardOption(4, this, 'low-temp')">
+                            < 200°C
+                        </div>
+                        <div class="selector-option" data-value="medium-temp" onclick="selectWizardOption(4, this, 'medium-temp')">
+                            200-500°C
+                        </div>
+                        <div class="selector-option" data-value="high-temp-range" onclick="selectWizardOption(4, this, 'high-temp-range')">
+                            500-700°C
+                        </div>
+                        <div class="selector-option" data-value="very-high-temp" onclick="selectWizardOption(4, this, 'very-high-temp')">
+                            > 700°C (intermittent)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results -->
+                <div id="selection-result" class="simulator-result" style="display:none;">
+                    <h3><i class="fas fa-check-circle"></i> Recommended Specification</h3>
+                    <div id="result-content"></div>
+                    <button class="selector-option" onclick="resetWizard()" style="margin-top: 1rem; background: #f8f9fa; border-color: #ccc;">
+                        <i class="fas fa-redo"></i> Start New Selection
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Bath Chemistry Section -->
+        <section id="chemistry" class="section">
+            <h2><i class="fas fa-flask"></i> Bath Chemistry & Coating Formulation</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Standard Al-Si Bath (Type 1)</h3>
+                    <p><strong>Composition:</strong> 89-91% Al, 9-11% Si</p>
+                    <p><strong>Operating Temp:</strong> 690-720°C</p>
+                    <p><strong>Intermetallic Layer:</strong> 5-8 μm FeAl₃/Fe₂Al₅</p>
+                    <p><strong>Viscosity:</strong> 1.2-1.5 mPa·s at 700°C</p>
+                    <p><strong>Application:</strong> Automotive exhaust, heat exchangers</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Pure Aluminum Bath (Type 2)</h3>
+                    <p><strong>Composition:</strong> ≥99% Al, ≤1% impurities</p>
+                    <p><strong>Operating Temp:</strong> 750-780°C</p>
+                    <p><strong>Intermetallic Layer:</strong> 8-15 μm Fe₂Al₅</p>
+                    <p><strong>Viscosity:</strong> 1.0-1.2 mPa·s at 760°C</p>
+                    <p><strong>Application:</strong> Architectural, marine environments</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Al-Mg-Si Modified Bath</h3>
+                    <p><strong>Composition:</strong> Al + 0.5-1.5% Mg + 1-2% Si</p>
+                    <p><strong>Operating Temp:</strong> 680-710°C</p>
+                    <p><strong>Intermetallic Layer:</strong> 4-6 μm with Mg₂Si precipitates</p>
+                    <p><strong>Hydrogen Absorption:</strong> 40-60% reduction vs standard</p>
+                    <p><strong>Application:</strong> High-strength, embrittlement-sensitive</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Process Simulator -->
+        <section id="simulator" class="section">
+            <h2><i class="fas fa-sliders-h"></i> Process Parameter Simulator</h2>
+            
+            <div class="interactive-panel">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Sheet Gauge: <span id="gaugeValue">0.064"</span></label>
+                        <input type="range" min="18" max="130" value="64" class="slider" id="gaugeSlider" style="width: 100%;" oninput="updateSimulator()">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;">
+                            <span>.018"</span><span>.130"</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Bath Temperature: <span id="tempValue">710°C</span></label>
+                        <input type="range" min="680" max="760" value="710" class="slider" id="tempSlider" style="width: 100%;" oninput="updateSimulator()">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;">
+                            <span>680°C</span><span>760°C</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Dipping Time: <span id="timeValue">8s</span></label>
+                        <input type="range" min="3" max="20" value="8" class="slider" id="timeSlider" style="width: 100%;" oninput="updateSimulator()">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;">
+                            <span>3s</span><span>20s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulator-result">
+                    <h3><i class="fas fa-chart-line"></i> Predicted Coating Characteristics</h3>
+                    <div class="card-grid">
+                        <div class="card">
+                            <h4>Intermetallic Layer</h4>
+                            <div class="metric-value" id="layerThickness">6.2 μm</div>
+                            <div class="metric-label">Target: 5-8 μm</div>
+                            <div style="background: #eee; height: 10px; border-radius: 5px; margin-top: 0.5rem; overflow: hidden;">
+                                <div id="layerBar" style="height: 100%; width: 62%; background: #27ae60; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h4>Coating Adhesion</h4>
+                            <div class="metric-value" id="adhesionScore">Excellent</div>
+                            <div class="metric-label">Peel Test: >8 N/mm</div>
+                            <div style="background: #eee; height: 10px; border-radius: 5px; margin-top: 0.5rem; overflow: hidden;">
+                                <div id="adhesionBar" style="height: 100%; width: 85%; background: #27ae60; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h4>Coating Mass</h4>
+                            <div class="metric-value" id="coatingMass">145 g/m²</div>
+                            <div class="metric-label">Total both sides</div>
+                            <div style="background: #eee; height: 10px; border-radius: 5px; margin-top: 0.5rem; overflow: hidden;">
+                                <div id="massBar" style="height: 100%; width: 48%; background: #3498db; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h4>Process Window</h4>
+                            <div class="metric-value" id="processWindow">Optimal</div>
+                            <div class="metric-label">Safety margin</div>
+                            <div style="background: #eee; height: 10px; border-radius: 5px; margin-top: 0.5rem; overflow: hidden;">
+                                <div id="windowBar" style="height: 100%; width: 75%; background: #27ae60; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="optimizationTips" style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                        <h4><i class="fas fa-lightbulb"></i> Optimization Recommendations</h4>
+                        <p>Current parameters are well optimized. Consider reducing temperature by 10°C for thin gauges to minimize intermetallic growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <h3>Hot-Dip Aluminizing Technical Resource</h3>
+            <p>Complete Industrial Reference | Technical Data Validated to ASTM A463 Standards</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">
+                <i class="fas fa-exclamation-triangle"></i> For engineering reference only. Consult material suppliers for critical applications.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeThermalChart();
+            initializeSimulator();
+            
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-links a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        });
+        
+        // Thermal Dynamics Chart
+        function initializeThermalChart() {
+            // Data for different gauges
+            const gauges = [0.018, 0.024, 0.036, 0.048, 0.064, 0.090, 0.130];
+            
+            // Optimal temperatures for each gauge
+            const temps = [720, 715, 710, 705, 700, 695, 690];
+            
+            // Dipping times for each gauge
+            const times = [5, 6, 7, 8, 9, 12, 15];
+            
+            // Risk zones
+            const riskLow = temps.map(t => t + 15);
+            const riskHigh = temps.map(t => t - 15);
+            
+            const data = [
+                {
+                    x: gauges,
+                    y: temps,
+                    mode: 'lines+markers+text',
+                    name: 'Optimal Temperature',
+                    line: {color: '#27ae60', width: 4},
+                    marker: {size: 10},
+                    text: temps.map(t => t + '°C'),
+                    textposition: 'top center',
+                    textfont: {size: 12, color: '#27ae60'}
+                },
+                {
+                    x: gauges,
+                    y: times,
+                    mode: 'lines+markers',
+                    name: 'Dipping Time',
+                    yaxis: 'y2',
+                    line: {color: '#3498db', width: 4, dash: 'dash'},
+                    marker: {size: 8}
+                },
+                {
+                    x: gauges,
+                    y: riskLow,
+                    mode: 'lines',
+                    name: 'Risk Zone (High)',
+                    line: {color: '#e74c3c', width: 1, dash: 'dot'},
+                    fillcolor: 'rgba(231, 76, 60, 0.1)',
+                    fill: 'tonexty'
+                },
+                {
+                    x: gauges,
+                    y: riskHigh,
+                    mode: 'lines',
+                    name: 'Risk Zone (Low)',
+                    line: {color: '#e74c3c', width: 1, dash: 'dot'},
+                    fill: 'tonexty'
+                }
+            ];
+            
+            const layout = {
+                title: {
+                    text: 'Optimal Process Parameters vs Sheet Gauge',
+                    font: {size: 18, color: '#2c3e50'}
+                },
+                xaxis: {
+                    title: {
+                        text: 'Sheet Thickness (inches)',
+                        font: {size: 14}
+                    },
+                    gridcolor: '#f0f0f0',
+                    tickvals: gauges,
+                    ticktext: gauges.map(g => g.toFixed(3) + '"'),
+                    tickfont: {size: 12}
+                },
+                yaxis: {
+                    title: {
+                        text: 'Bath Temperature (°C)',
+                        font: {size: 14}
+                    },
+                    gridcolor: '#f0f0f0',
+                    range: [670, 740],
+                    tickfont: {size: 12}
+                },
+                yaxis2: {
+                    title: {
+                        text: 'Dipping Time (seconds)',
+                        font: {size: 14}
+                    },
+                    overlaying: 'y',
+                    side: 'right',
+                    gridcolor: '#f0f0f0',
+                    range: [3, 18],
+                    tickfont: {size: 12}
+                },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: {color: '#333'},
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {
+                    x: 0.02,
+                    y: 0.98,
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    bordercolor: '#ddd',
+                    borderwidth: 1
+                },
+                annotations: [
+                    {
+                        x: 0.018,
+                        y: 730,
+                        text: 'Thin Gauges:<br>Rapid heating risk',
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 0,
+                        ay: -40,
+                        font: {size: 12, color: '#666'},
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#ddd',
+                        borderwidth: 1
+                    },
+                    {
+                        x: 0.130,
+                        y: 685,
+                        text: 'Thick Gauges:<br>Heat sink effect',
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 0,
+                        ay: 40,
+                        font: {size: 12, color: '#666'},
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#ddd',
+                        borderwidth: 1
+                    }
+                ]
+            };
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: 'thermal_dynamics_chart',
+                    height: 600,
+                    width: 1000,
+                    scale: 2
+                }
+            };
+            
+            Plotly.newPlot('thermalChart', data, layout, config);
+        }
+        
+        // Material Selector Wizard
+        let wizardSelections = {
+            q1: null,
+            q2: null,
+            q3: null,
+            q4: null
+        };
+        
+        function selectWizardOption(questionNum, element, value) {
+            const questionId = 'q' + questionNum;
+            const questionElement = document.getElementById(questionId);
+            
+            // Remove selected class from all options in this question
+            questionElement.querySelectorAll('.selector-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Store selection
+            wizardSelections[questionId] = value;
+            
+            // Show next question or results
+            if (questionNum < 4) {
+                const nextQuestionId = 'q' + (questionNum + 1);
+                document.getElementById(nextQuestionId).style.display = 'block';
+                // Smooth scroll to next question
+                document.getElementById(nextQuestionId).scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            } else {
+                showWizardResult();
+            }
+        }
+        
+        function showWizardResult() {
+            const resultDiv = document.getElementById('selection-result');
+            const contentDiv = document.getElementById('result-content');
+            
+            // Generate recommendation based on selections
+            let recommendation = generateRecommendation();
+            
+            contentDiv.innerHTML = recommendation;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function generateRecommendation() {
+            const appType = wizardSelections.q1;
+            const environment = wizardSelections.q2;
+            const strength = wizardSelections.q3;
+            const temperature = wizardSelections.q4;
+            
+            let coatingType = '';
+            let coatingMass = '';
+            let bathComposition = '';
+            let processParams = '';
+            let applications = '';
+            let keyBenefits = '';
+            let limitations = '';
+            
+            // Determine recommendation based on selections
+            if (appType === 'high-temp' || temperature === 'high-temp-range' || temperature === 'very-high-temp') {
+                coatingType = 'ASTM A463 Type 1 (Al-Si)';
+                coatingMass = '150-200 g/m² total';
+                bathComposition = 'Al-11%Si, Fe ≤ 2.0%, Zn ≤ 0.3%';
+                processParams = 'Bath: 700-720°C, Time: 5-15s, Cooling: 20-40°C/s';
+                applications = 'Exhaust systems, heat exchangers, furnace parts, thermal oxidizers';
+                keyBenefits = 'Oxidation resistance to 677°C, thermal cycling resistance, scale prevention';
+                limitations = 'Lower atmospheric corrosion resistance than Type 2, requires controlled cooling';
+            } 
+            else if (appType === 'corrosion' || environment === 'marine' || environment === 'industrial') {
+                coatingType = 'ASTM A463 Type 2 (Pure Al)';
+                coatingMass = '200-250 g/m² total';
+                bathComposition = '≥99% Al, Si ≤ 0.3%, Fe ≤ 1.5%';
+                processParams = 'Bath: 750-780°C, Time: 8-20s, Cooling: 10-25°C/s';
+                applications = 'Architectural cladding, marine structures, industrial roofing, chemical plants';
+                keyBenefits = '3-5× better corrosion resistance than zinc, excellent edge protection, long service life';
+                limitations = 'Limited to 400°C continuous service, higher bath temperature required';
+            }
+            else if (appType === 'hydrogen' || strength === 'advanced') {
+                coatingType = 'Modified Al-Mg-Si Alloy';
+                coatingMass = '120-180 g/m² total';
+                bathComposition = 'Al-1%Mg-1.5%Si, Fe ≤ 1.8%, controlled impurities';
+                processParams = 'Bath: 680-710°C, Time: 4-10s, Rapid quenching >50°C/s';
+                applications = 'High-strength automotive, pressure vessels, critical structural components';
+                keyBenefits = '40-60% reduced hydrogen absorption, excellent for embrittlement-prone steels';
+                limitations = 'Specialized bath management, higher cost, limited suppliers';
+            }
+            else if (appType === 'forming') {
+                coatingType = 'Low-Si Al-Si Coating';
+                coatingMass = '100-150 g/m² total';
+                bathComposition = 'Al-8%Si, controlled Fe content ≤ 1.5%';
+                processParams = 'Bath: 690-710°C, Time: 3-8s, Controlled cooling';
+                applications = 'Complex formed parts, deep drawn components, automotive body panels';
+                keyBenefits = 'Superior formability, minimal coating cracking, good paint adhesion';
+                limitations = 'Reduced high-temperature performance compared to 11%Si';
+            }
+            else {
+                // Default recommendation
+                coatingType = 'ASTM A463 Type 1 (Al-Si)';
+                coatingMass = '125-175 g/m² total';
+                bathComposition = 'Al-9%Si, standard impurity limits';
+                processParams = 'Bath: 700-730°C, Time: 6-12s, Cooling: 15-30°C/s';
+                applications = 'General industrial, appliance components, mechanical parts';
+                keyBenefits = 'Good balance of properties, widely available, proven performance';
+                limitations = 'Standard performance characteristics';
+            }
+            
+            // Atmosphere recommendations based on strength
+            let atmosphere = '';
+            if (strength === 'mild') {
+                atmosphere = 'N₂-5%H₂, H₂ ≤ 1000 ppm, O₂ ≤ 20 ppm, dew point ≤ -25°C';
+            } else if (strength === 'high-strength') {
+                atmosphere = 'N₂-3%H₂, H₂ ≤ 500 ppm, O₂ ≤ 10 ppm, dew point ≤ -30°C';
+            } else if (strength === 'advanced') {
+                atmosphere = 'N₂-1%H₂ or 100%N₂, H₂ ≤ 300 ppm, O₂ ≤ 5 ppm, dew point ≤ -40°C';
+            }
+            
+            return `
+                <div style="background: white; border-radius: 10px; padding: 1.5rem; margin: 1rem 0; border: 2px solid #3498db;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">Coating Specification</h4>
+                            <p><strong>Type:</strong> ${coatingType}</p>
+                            <p><strong>Mass:</strong> ${coatingMass}</p>
+                            <p><strong>Bath:</strong> ${bathComposition}</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">Process Parameters</h4>
+                            <p><strong>Atmosphere:</strong> ${atmosphere}</p>
+                            <p><strong>Processing:</strong> ${processParams}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">Applications</h4>
+                        <p>${applications}</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                        <div style="background: #e8f6ef; padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #27ae60; margin-bottom: 0.5rem;">Key Benefits</h5>
+                            <p style="font-size: 0.9rem;">${keyBenefits}</p>
+                        </div>
+                        <div style="background: #fdedec; padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #e74c3c; margin-bottom: 0.5rem;">Limitations</h5>
+                            <p style="font-size: 0.9rem;">${limitations}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                        <h5 style="color: #2c3e50; margin-bottom: 0.5rem;">Based on your selections:</h5>
+                        <ul style="font-size: 0.9rem; padding-left: 1.5rem;">
+                            <li>Primary requirement: ${wizardSelections.q1 ? wizardSelections.q1.replace('-', ' ') : 'Not specified'}</li>
+                            <li>Environment: ${wizardSelections.q2 ? wizardSelections.q2 : 'Not specified'}</li>
+                            <li>Steel strength: ${wizardSelections.q3 ? wizardSelections.q3.replace('-', ' ') : 'Not specified'}</li>
+                            <li>Temperature: ${wizardSelections.q4 ? wizardSelections.q4.replace('-', ' ') : 'Not specified'}</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function resetWizard() {
+            // Reset selections
+            wizardSelections = {
+                q1: null,
+                q2: null,
+                q3: null,
+                q4: null
+            };
+            
+            // Hide all but first question
+            document.getElementById('q2').style.display = 'none';
+            document.getElementById('q3').style.display = 'none';
+            document.getElementById('q4').style.display = 'none';
+            document.getElementById('selection-result').style.display = 'none';
+            
+            // Remove selected classes
+            document.querySelectorAll('.selector-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Scroll to top of wizard
+            document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Process Simulator
+        function initializeSimulator() {
+            updateSimulator();
+        }
+        
+        function updateSimulator() {
+            const gauge = parseFloat(document.getElementById('gaugeSlider').value) / 1000;
+            const temp = parseFloat(document.getElementById('tempSlider').value);
+            const time = parseFloat(document.getElementById('timeSlider').value);
+            
+            // Update display values
+            document.getElementById('gaugeValue').textContent = gauge.toFixed(3) + '"';
+            document.getElementById('tempValue').textContent = temp + '°C';
+            document.getElementById('timeValue').textContent = time + 's';
+            
+            // Calculate predicted values
+            const baseThickness = 2.5;
+            const tempEffect = (temp - 710) * 0.05;
+            const timeEffect = (time - 8) * 0.3;
+            const gaugeEffect = (gauge - 0.064) * 10;
+            
+            const predictedThickness = Math.max(1, Math.min(20, 
+                baseThickness + tempEffect + timeEffect + gaugeEffect
+            ));
+            
+            const adhesionScore = predictedThickness <= 8 ? 10 - predictedThickness : 10 - (predictedThickness - 8) * 2;
+            const coatingMass = 100 + gauge * 500 + time * 5;
+            const processWindow = 10 - Math.abs(temp - 710) * 0.1 - Math.abs(time - 8) * 0.2;
+            
+            // Update display
+            document.getElementById('layerThickness').textContent = predictedThickness.toFixed(1) + ' μm';
+            document.getElementById('adhesionScore').textContent = adhesionScore >= 8 ? 'Excellent' : adhesionScore >= 6 ? 'Good' : 'Fair';
+            document.getElementById('coatingMass').textContent = Math.round(coatingMass) + ' g/m²';
+            document.getElementById('processWindow').textContent = processWindow >= 8 ? 'Optimal' : processWindow >= 6 ? 'Good' : 'Marginal';
+            
+            // Update progress bars
+            document.getElementById('layerBar').style.width = Math.min(100, (predictedThickness / 12) * 100) + '%';
+            document.getElementById('layerBar').style.background = predictedThickness <= 8 ? '#27ae60' : predictedThickness <= 10 ? '#f39c12' : '#e74c3c';
+            
+            document.getElementById('adhesionBar').style.width = Math.min(100, (adhesionScore / 10) * 100) + '%';
+            document.getElementById('adhesionBar').style.background = adhesionScore >= 8 ? '#27ae60' : adhesionScore >= 6 ? '#f39c12' : '#e74c3c';
+            
+            document.getElementById('massBar').style.width = Math.min(100, (coatingMass / 300) * 100) + '%';
+            document.getElementById('windowBar').style.width = Math.min(100, (processWindow / 10) * 100) + '%';
+            document.getElementById('windowBar').style.background = processWindow >= 8 ? '#27ae60' : processWindow >= 6 ? '#f39c12' : '#e74c3c';
+            
+            // Update optimization tips
+            let tips = '';
+            if (predictedThickness > 8) {
+                tips = 'Consider reducing bath temperature by 10-15°C or decreasing dipping time by 2-3 seconds to reduce intermetallic growth and improve formability.';
+            } else if (predictedThickness < 5) {
+                tips = 'Consider increasing bath temperature by 10°C or dipping time by 2 seconds to ensure adequate bond formation and coating adhesion.';
+            } else {
+                tips = 'Parameters are well optimized. Current settings should produce excellent coating adhesion and formability. Maintain consistent line speed.';
+            }
+            
+            if (gauge < 0.05) {
+                tips += ' For thin gauges, monitor temperature closely to prevent overheating and excessive intermetallic growth.';
+            }
+            
+            if (temp > 730) {
+                tips += ' High bath temperature accelerates dross formation. Monitor bath chemistry more frequently.';
+            }
+            
+            document.getElementById('optimizationTips').querySelector('p').textContent = tips;
+        }
+        
+        // Update chart on window resize
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('thermalChart');
+        });
+    </script>
+</body>
+</html>

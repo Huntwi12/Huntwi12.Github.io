@@ -1,9 +1,27 @@
 // Portfolio data
 const portfolioData = {
-  name: 'William Hunt',
+  name: 'William J. Hunt',
   jobTitle: 'Aluminizer',
   jobDescription: 'Living Life 8 Hours At A Time',
   jobs: [
+    {
+      title: 'Union Production/Alumize Production ',
+      company: 'Cleveland-Cliffs Middletown Works',
+      dates: 'May 2024 - Present',
+      description: 'Production Crew Member specializing in aluminizing processes. Responsible for operating Custom Machinery (Safety & Effectively), Performing Continuous tasks, and adapting to various production needs in a unionized environment.',
+      icon: 'mdi-account-hard-hat',
+      responsibilities: [
+        'Operating purpose made stations(On and Off a Buzzer")',
+        'Filling in for other positions as needed for Callouts',
+        'Held a high standard of work quality and efficiency',
+        'Work rotating southern swing shifts (7-day rotation)',
+        'Follow union guidelines and safety protocols',
+        'Held To The Highest Accountability Standards I Have Ever Experienced',
+        'Almost Met Personal Standards for Attendance (as of January 2026 99.983% Attendance Rate)'
+        
+      ],
+      isCurrent: true
+    },
     {
       title: 'Union Production/Service Crew',
       company: 'Graphic Packaging International - Middletown Mill',
@@ -21,7 +39,7 @@ const portfolioData = {
       isCurrent: false
     },
     {
-      title: 'Entry Level Industrial Maintenance Technician',
+      title: 'Entry Level Industrial Maintenance Technician/Porduction Crew Member',
       company: 'EVERTZ Technologies USA',
       dates: 'May 2021 - September 2023',
       description: 'Designed, troubleshooted and operated custom tailored equipment. Worked various scheduled shifts to meet product deadlines while conducting preventive maintenance and repairs.',
@@ -90,7 +108,7 @@ const portfolioData = {
   skills: [
     {
       name: 'Adept Learner',
-      description: 'Provided I can grasp the concepts'
+      description: 'Quickly Grasp New Concepts and Technologies'
     },
     {
       name: 'Mechanically Inclined',
@@ -98,7 +116,7 @@ const portfolioData = {
     },
     {
       name: 'Cognitive Adaptability',
-      description: 'Safely Process Information In Response To Changing Circumstances'
+      description: 'Thrives in Dynamic and Changing Environments'
     },
     {
       name: 'Problem Solver',
@@ -109,8 +127,8 @@ const portfolioData = {
       description: 'Experience working in diverse industrial teams'
     },
     {
-      name: 'Technical Documentation',
-      description: 'Creating and following detailed procedures and manuals'
+      name: 'Detail Oriented',
+      description: 'Focus on precision and accuracy in technical tasks'
     }
   ],
   works: [
@@ -130,7 +148,7 @@ const portfolioData = {
   hobbies: [
     {
       name: 'Fly Fishing',
-      description: 'Steep Learning Curve. Fully Recommend'
+      description: 'Steep Learning Curve. Fully Recommend.Can Be Very Relaxing. Can Be Frustrating At Times.'
     },
     {
       name: 'Welding',
@@ -144,13 +162,13 @@ const portfolioData = {
   topics: [
     {
       name: 'Financial Markets',
-      description: 'The easiest and one of the largest amount of data we can get our hands on is Market Data. Its intresting being able to Retrieve, Organize, analyze and percieve the data to make informed decisions. Theres a billion indicators out there and all of it runs on mathmatical equations.',
-      subtopics: ['Stocks', 'Forex', 'Crypto', 'Options']
+      description: 'The easiest and one of the largest amount of data we can get our hands on is Market Data. Its intresting being able to Retrieve, Organize, Analyze and Percieve the data to make informed decisions. Theres a billion indicators out there and all of it runs on mathmatical equations.',
+      subtopics: ['Stocks', 'Forex', 'Crypto', 'Options','Technical Analysis', 'Fundamental Analysis']
     },
     {
       name: 'Industrial Millwrighting',
       description: 'My time at Evertz was a turning point, shaping me into a unskilled millwright. I thrived as the go-to person for maintaining specialized machinery, using logic to solve problems and continuously improving processes for greater efficiency.I hope to continue to build any Millwright knowledge apon this.',
-      subtopics: ['PLC Programming', 'hydraulics','480V/240V', 'Star/Delta Wiring' , 'Electric Motors']
+      subtopics: ['Preventive Maintenance', 'Troubleshooting', 'Equipment Operation', 'Safety Protocols']
     },
     {
       name: 'Local History',
@@ -159,9 +177,6 @@ const portfolioData = {
     }
   ],
   contacts: {
-    email: '',
-    mobileNo: '',
-    phoneNo: '',
     links: [
       {
         name: 'GitHub',

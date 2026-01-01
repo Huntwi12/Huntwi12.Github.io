@@ -6,7 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="msapplication-TileColor" content="#50514F">
   <meta name="theme-color" content="#50514F">
-  <title>William Hunt's Portfolio</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Portfolio of William J. Hunt - Professional timeline, projects, skills, and contact information. Living life 8 hours at a time.">
+  <meta name="keywords" content="portfolio, web development, projects, skills, timeline, contact">
+  <meta name="author" content="William J. Hunt">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="William J. Hunt's Portfolio">
+  <meta property="og:description" content="Professional portfolio showcasing projects, skills, and work experience.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain.com">
+  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@williamhunt">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://yourdomain.com">
+  
+  <title>William J. Hunt's Portfolio</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,17 +44,16 @@
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="container">
-    <div class="nav-container">
+  <nav class="container" aria-label="Main navigation">
+    <div class="nav-container" role="navigation">
       <div>
-        <h1 id="name" class="gradient-text nav-title">William Hunt</h1>
+        <h1 id="name" class="gradient-text nav-title">William J. Hunt</h1>
       </div>
       <div class="nav-links">
         <a href="#home" class="nav-link active">Home</a>
         <a href="#projects" class="nav-link">Projects</a>
         <a href="#skills" class="nav-link">Skills</a>
         <a href="#hobbies" class="nav-link">Hobbies</a>
-        <a href="#contact" class="nav-link">Links</a>
       </div>
     </div>
   </nav>
@@ -38,13 +61,15 @@
   <!-- Search Bar -->
   <div class="search-section">
     <div class="search-container">
+      <label for="projectSearch" class="sr-only"></label>
       <input type="text" 
              class="search-bar" 
              id="projectSearch"
              placeholder=""
              maxlength="4"
              pattern="\d{4}"
-             inputmode="numeric">
+             inputmode="numeric"
+             aria-label="">
     </div>
   </div>
 
@@ -53,7 +78,7 @@
     <div class="center-content" data-aos="fade-up">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="gradient-text" id="heroName">William Hunt</span>
+          <span class="gradient-text" id="heroName">William J. Hunt</span>
         </h1>
         <p id="jobDescription" class="hero-description">
           Living Life 8 Hours At A Time
@@ -139,23 +164,6 @@
       </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section-spacing">
-      <div class="flat-card contact-card" data-aos="fade-up">
-        <h2 class="section-title contact-title">
-          <i class="mdi mdi-link-variant section-icon"></i>
-          Links & Connections
-        </h2>
-        
-        <div class="contact-info-grid" id="contactInfo">
-          <!-- Contact info will be inserted here -->
-        </div>
-
-        <div class="contact-links" id="contactLinks">
-          <!-- Contact links will be inserted here -->
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
@@ -164,7 +172,7 @@
         <!-- Footer links will be inserted here -->
       </div>
       <p class="footer-text">
-        &copy; <span id="currentYear"></span> William Hunt. Living life 8 hours at a time.
+        &copy; <span id="currentYear"></span> William J. Hunt. Living life 8 hours at a time.
       </p>
       <p class="footer-subtext">
         Portfolio with project code search functionality

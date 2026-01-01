@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyodide IDE - Python in Browser</title>
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --terminal-bg: #0a0a0a;
+            --editor-bg: #1e1e1e;
+            --sidebar-bg: #2d2d30;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 16px;
+            gap: 16px;
+        }
+        
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--warning);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn:disabled:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #0da674);
+            border: none;
+        }
+        
+        .btn-success:hover:not(:disabled) {
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 16px;
+            min-height: 0;
+        }
+        
+        /* Editor Section */
+        .editor-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            background: var(--editor-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .editor-header {
+            padding: 16px 20px;
+            background: rgba(45, 45, 48, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .editor-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .editor-info span {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        #editor {
+            flex: 1;
+            width: 100%;
+            background: var(--editor-bg);
+            color: #d4d4d4;
+            font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 20px;
+            border: none;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
+        }
+        
+        /* Terminal Section */
+        .terminal-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--terminal-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .terminal-header {
+            padding: 16px 20px;
+            background: rgba(10, 10, 10, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .terminal-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .terminal-controls .btn {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        #terminal {
+            flex: 1;
+            background: var(--terminal-bg);
+            color: #00ff00;
+            font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            padding: 20px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        .terminal-line {
+            margin-bottom: 4px;
+        }
+        
+        .terminal-prompt {
+            color: #00ff00;
+        }
+        
+        .terminal-output {
+            color: #ffffff;
+        }
+        
+        .terminal-error {
+            color: #ff5555;
+        }
+        
+        .terminal-success {
+            color: #55ff55;
+        }
+        
+        .terminal-info {
+            color: #5555ff;
+        }
+        
+        /* Examples Panel */
+        .examples-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .examples-panel.open {
+            right: 0;
+        }
+        
+        .panel-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .examples-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .example-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+        
+        .example-card.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .example-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .example-description {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        .example-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            z-index: 2000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+            word-wrap: break-word;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .editor-section, .terminal-section {
+                min-height: 300px;
+            }
+            
+            .examples-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h2>Loading Python Runtime</h2>
+            <p>Downloading Pyodide (Python WebAssembly)...</p>
+            <p><small>This may take 10-20 seconds on first load</small></p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="loading-message">Starting download...</div>
+        </div>
+    </div>
+    
+    <div id="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Pyodide IDE</h1>
+                    <p>Python in Your Browser • No Backend Required</p>
+                </div>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span id="status-text">Initializing Python Runtime...</span>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-primary" id="run-btn" disabled>
+                <i class="fas fa-play"></i> Run Code (Ctrl+Enter)
+            </button>
+            <button class="btn" id="examples-btn" disabled>
+                <i class="fas fa-book"></i> Examples
+            </button>
+            <button class="btn" id="save-btn" disabled>
+                <i class="fas fa-save"></i> Save
+            </button>
+            <button class="btn" id="clear-btn" disabled>
+                <i class="fas fa-broom"></i> Clear Terminal
+            </button>
+            <button class="btn btn-success" id="install-btn" disabled>
+                <i class="fas fa-box"></i> Install Package
+            </button>
+            <button class="btn" id="theme-btn" disabled>
+                <i class="fas fa-moon"></i> Theme
+            </button>
+            <div style="flex: 1;"></div>
+            <button class="btn" id="help-btn" disabled>
+                <i class="fas fa-question-circle"></i> Help
+            </button>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Editor -->
+            <div class="editor-section">
+                <div class="editor-header">
+                    <div class="editor-info">
+                        <span><i class="fas fa-file-code"></i> main.py</span>
+                        <span id="line-count">Line: 1, Col: 1</span>
+                        <span id="char-count">Chars: 0</span>
+                    </div>
+                    <div>
+                        <span id="python-version">Python: Loading...</span>
+                    </div>
+                </div>
+                <textarea id="editor" spellcheck="false"># Welcome to Pyodide IDE!
+# Python running entirely in your browser
+
+print("🚀 Initializing Python environment...")
+print("📦 Pyodide is loading Python WebAssembly")
+
+# Try this basic Python code
+name = "Python Developer"
+print(f"\n👋 Hello, {name}!")
+
+# Simple calculations
+x = 10
+y = 20
+print(f"🔢 {x} + {y} = {x + y}")
+
+# List example
+fruits = ["🍎 Apple", "🍌 Banana", "🍒 Cherry"]
+print("\n📝 Fruits:")
+for fruit in fruits:
+    print(f"  • {fruit}")
+
+print("\n✅ Python is ready! Click 'Run Code' to execute.")</textarea>
+            </div>
+            
+            <!-- Terminal -->
+            <div class="terminal-section">
+                <div class="terminal-header">
+                    <div>
+                        <i class="fas fa-terminal"></i>
+                        <span>Terminal</span>
+                    </div>
+                    <div class="terminal-controls">
+                        <button class="btn" id="clear-terminal-btn" disabled>
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                        <button class="btn" id="copy-terminal-btn" disabled>
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <div id="terminal">
+                    <div class="terminal-info">🚀 Pyodide IDE - Python in Browser</div>
+                    <div class="terminal-info">📦 Loading Python runtime...</div>
+                    <div class="terminal-info">⏳ Please wait while Pyodide downloads (~10MB)</div>
+                    <div class="terminal-info">✨ Once loaded, you can run Python code instantly!</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples Panel Overlay -->
+        <div class="overlay" id="overlay"></div>
+        
+        <!-- Examples Panel -->
+        <div class="examples-panel" id="examples-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-book-open"></i> Code Examples</h3>
+                <button class="btn" id="close-examples-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="examples-list" id="examples-list">
+                <!-- Examples will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let pyodide = null;
+        let isRunning = false;
+        let isDarkTheme = true;
+        let currentExample = null;
+        let isInitialized = false;
+        
+        // Enhanced examples with categories
+        const examples = [
+            {
+                id: 1,
+                title: "Hello World & Basics",
+                description: "Start with basic Python syntax, variables, and functions",
+                tags: ["beginner", "basics"],
+                icon: "👋",
+                code: `# Welcome to Pyodide IDE!
+# Python running in your browser
+
+print("🚀 Hello from Python in Browser!")
+print("✨ No server required - runs entirely client-side")
+
+# Basic operations
+x = 10
+y = 3.14
+print(f"\\n📊 Variables: x = {x}, y = {y}")
+print(f"   x + y = {x + y}")
+print(f"   x * y = {x * y}")
+
+# Lists and loops
+fruits = ["🍎 Apple", "🍌 Banana", "🍒 Cherry"]
+print("\\n📝 Fruits list:")
+for i, fruit in enumerate(fruits, 1):
+    print(f"   {i}. {fruit}")
+
+# Functions
+def calculate_circle_area(radius):
+    return 3.14159 * radius * radius
+
+area = calculate_circle_area(5)
+print(f"\\n🔵 Circle with radius 5 has area: {area:.2f}")
+
+print("\\n✅ Basic example completed!")`
+            },
+            {
+                id: 2,
+                title: "Data Analysis with NumPy",
+                description: "Numerical computing and array operations with NumPy",
+                tags: ["numpy", "math", "data"],
+                icon: "📈",
+                code: `import numpy as np
+
+print("🧮 NumPy - Numerical Python")
+print("=" * 50)
+
+# Create arrays
+arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print(f"Array: {arr}")
+print(f"Shape: {arr.shape}")
+print(f"Sum: {np.sum(arr)}")
+print(f"Mean: {np.mean(arr):.2f}")
+print(f"Std Dev: {np.std(arr):.2f}")
+
+# Reshape and matrix operations
+matrix = arr.reshape(2, 5)
+print(f"\\n📐 Matrix (2x5):")
+print(matrix)
+print(f"\\nMatrix operations:")
+print(f"  Transpose:\\n{matrix.T}")
+print(f"  Determinant of 2x2: {np.linalg.det(matrix[:, :2]):.2f}")
+
+# Random numbers
+print(f"\\n🎲 Random Data:")
+random_data = np.random.randn(100)  # 100 random numbers
+print(f"  Generated 100 random numbers")
+print(f"  Mean: {random_data.mean():.3f}")
+print(f"  Min: {random_data.min():.3f}")
+print(f"  Max: {random_data.max():.3f}")
+
+# Linear algebra
+print(f"\\n🔢 Linear Algebra:")
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+print(f"  Matrix A:\\n{A}")
+print(f"  Matrix B:\\n{B}")
+print(f"  A + B:\\n{A + B}")
+print(f"  A × B:\\n{A @ B}")  # Matrix multiplication
+
+print("\\n✅ NumPy example completed!")`
+            },
+            {
+                id: 3,
+                title: "DataFrames with Pandas",
+                description: "Data manipulation and analysis using Pandas DataFrames",
+                tags: ["pandas", "data", "analysis"],
+                icon: "🐼",
+                code: `import pandas as pd
+import numpy as np
+
+print("🐼 Pandas - Data Analysis Library")
+print("=" * 50)
+
+# Create sample data
+data = {
+    'Name': ['Alice Johnson', 'Bob Smith', 'Charlie Brown', 'Diana Prince', 'Ethan Hunt'],
+    'Age': [28, 34, 22, 29, 31],
+    'Department': ['Engineering', 'Sales', 'Engineering', 'Marketing', 'HR'],
+    'Salary': [85000, 72000, 68000, 78000, 65000],
+    'Experience': [5, 8, 2, 6, 4]
+}
+
+df = pd.DataFrame(data)
+print("📋 Original DataFrame:")
+print(df)
+print(f"\\n📊 Shape: {df.shape}")
+print(f"📝 Columns: {list(df.columns)}")
+
+# Basic statistics
+print("\\n📈 Basic Statistics:")
+print(df.describe())
+
+# Filtering
+print("\\n🔍 Filtered Data:")
+print("Employees in Engineering:")
+engineering = df[df['Department'] == 'Engineering']
+print(engineering)
+
+print("\\n💰 High Earners (Salary > 70000):")
+high_earners = df[df['Salary'] > 70000]
+print(high_earners[['Name', 'Salary', 'Department']])
+
+# Group by operations
+print("\\n👥 Department Analysis:")
+dept_stats = df.groupby('Department').agg({
+    'Salary': ['mean', 'sum', 'count'],
+    'Age': 'mean',
+    'Experience': 'mean'
+}).round(2)
+print(dept_stats)
+
+# Sorting
+print("\\n📊 Top 3 Salaries:")
+top_salaries = df.nlargest(3, 'Salary')[['Name', 'Salary', 'Department']]
+print(top_salaries)
+
+print("\\n✅ Pandas example completed!")`
+            }
+        ];
+
+        // Initialize everything when page loads
+        window.addEventListener('load', async function() {
+            // Setup UI first
+            setupUI();
+            
+            // Then load Pyodide asynchronously
+            await initPyodide();
+        });
+        
+        // Setup UI components
+        function setupUI() {
+            // Setup button event listeners (but keep them disabled until Pyodide loads)
+            document.getElementById('run-btn').addEventListener('click', runCode);
+            document.getElementById('save-btn').addEventListener('click', saveCode);
+            document.getElementById('clear-btn').addEventListener('click', clearTerminal);
+            document.getElementById('clear-terminal-btn').addEventListener('click', clearTerminal);
+            document.getElementById('copy-terminal-btn').addEventListener('click', copyTerminal);
+            document.getElementById('install-btn').addEventListener('click', installPackage);
+            document.getElementById('examples-btn').addEventListener('click', showExamplesPanel);
+            document.getElementById('close-examples-btn').addEventListener('click', hideExamplesPanel);
+            document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+            document.getElementById('help-btn').addEventListener('click', showHelp);
+            document.getElementById('overlay').addEventListener('click', hideExamplesPanel);
+            
+            // Load examples panel
+            loadExamplesToPanel();
+            
+            // Editor event listeners
+            const editor = document.getElementById('editor');
+            editor.addEventListener('input', updateEditorInfo);
+            editor.addEventListener('keyup', updateEditorInfo);
+            editor.addEventListener('click', updateEditorInfo);
+            
+            // Keyboard shortcuts (should work even before Pyodide loads)
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+Enter to run (only when Pyodide is loaded)
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    if (isInitialized) {
+                        runCode();
+                    } else {
+                        showNotification("Python runtime not loaded yet", "error");
+                    }
+                }
+                
+                // Ctrl+S to save
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveCode();
+                }
+                
+                // Escape to close panels
+                if (e.key === 'Escape') {
+                    hideExamplesPanel();
+                }
+            });
+            
+            // Focus editor
+            editor.focus();
+            updateEditorInfo();
+        }
+        
+        // Initialize Pyodide
+        async function initPyodide() {
+            updateStatus("🚀 Downloading Python runtime...", "loading");
+            updateLoadingMessage("Starting Pyodide download...");
+            
+            try {
+                // Simulate progress updates
+                simulateProgress();
+                
+                // Load Pyodide with timeout
+                const loadPromise = loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+                });
+                
+                // Add timeout to prevent hanging
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error("Pyodide loading timed out after 30 seconds")), 30000);
+                });
+                
+                pyodide = await Promise.race([loadPromise, timeoutPromise]);
+                
+                // Get Python version
+                const version = pyodide.runPython("import sys; sys.version.split()[0]");
+                document.getElementById('python-version').textContent = `Python ${version}`;
+                
+                // Set up Python output redirection
+                setupPythonOutput();
+                
+                // Load first example
+                loadExample(0);
+                
+                // Enable all buttons
+                enableAllButtons();
+                
+                // Hide loading overlay
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-overlay').style.display = 'none';
+                    }, 300);
+                }, 500);
+                
+                updateStatus("✅ Python ready! Run your code.", "success");
+                writeToTerminal("\n✅ Python " + version + " loaded successfully!\n");
+                writeToTerminal("✨ Ready to execute Python code\n");
+                writeToTerminal("📦 Available packages: numpy, pandas, matplotlib, scikit-learn\n");
+                writeToTerminal("💡 Try the examples or write your own Python code\n\n");
+                
+                isInitialized = true;
+                
+            } catch (error) {
+                console.error("Pyodide loading error:", error);
+                updateStatus(`❌ Error loading Python`, "error");
+                updateLoadingMessage(`Error: ${error.message}`);
+                writeToTerminal(`❌ Error loading Python: ${error.message}\n`);
+                
+                // Show error in loading overlay
+                document.getElementById('loading-message').innerHTML = 
+                    `<span style="color: #ef4444;">Error: ${error.message}</span><br>
+                     <button class="btn" onclick="location.reload()" style="margin-top: 10px;">Retry</button>`;
+                
+                // Still enable some buttons even if Pyodide fails
+                enableBasicButtons();
+            }
+        }
+        
+        // Simulate download progress
+        function simulateProgress() {
+            let progress = 0;
+            const messages = [
+                "Starting download...",
+                "Downloading WebAssembly files...",
+                "Loading Python interpreter...",
+                "Initializing runtime...",
+                "Almost ready..."
+            ];
+            
+            const interval = setInterval(() => {
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                progress += Math.random() * 10 + 5;
+                if (progress > 95) progress = 95;
+                
+                document.getElementById('progress-fill').style.width = progress + '%';
+                
+                // Update message every 20%
+                if (progress % 20 < 5) {
+                    const messageIndex = Math.min(Math.floor(progress / 20), messages.length - 1);
+                    updateLoadingMessage(messages[messageIndex]);
+                }
+            }, 300);
+            
+            // Store interval ID to clear if needed
+            window.progressInterval = interval;
+        }
+        
+        // Update loading message
+        function updateLoadingMessage(message) {
+            document.getElementById('loading-message').textContent = message;
+        }
+        
+        // Enable all buttons after Pyodide loads
+        function enableAllButtons() {
+            const buttons = [
+                'run-btn', 'examples-btn', 'save-btn', 'clear-btn', 
+                'install-btn', 'theme-btn', 'help-btn', 'clear-terminal-btn',
+                'copy-terminal-btn'
+            ];
+            
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.disabled = false;
+            });
+            
+            // Clear progress interval if still running
+            if (window.progressInterval) {
+                clearInterval(window.progressInterval);
+                document.getElementById('progress-fill').style.width = '100%';
+            }
+        }
+        
+        // Enable basic buttons even if Pyodide fails
+        function enableBasicButtons() {
+            const basicButtons = ['save-btn', 'theme-btn', 'help-btn'];
+            basicButtons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.disabled = false;
+            });
+        }
+        
+        // Set up Python output redirection
+        function setupPythonOutput() {
+            pyodide.runPython(`
+import sys
+import js
+
+class TerminalOutput:
+    def __init__(self, is_error=False):
+        self.is_error = is_error
+    
+    def write(self, text):
+        if text and text != '\\n':
+            # Send to terminal
+            js.writeToTerminal(text)
+    
+    def flush(self):
+        pass
+
+sys.stdout = TerminalOutput()
+sys.stderr = TerminalOutput(is_error=True)
+            `);
+        }
+        
+        // Run Python code
+        async function runCode() {
+            if (!pyodide || !isInitialized) {
+                showNotification("Python runtime not loaded yet", "error");
+                return;
+            }
+            
+            if (isRunning) {
+                showNotification("Code is already running", "warning");
+                return;
+            }
+            
+            const code = document.getElementById('editor').value;
+            if (!code.trim()) {
+                showNotification("No code to run", "warning");
+                return;
+            }
+            
+            isRunning = true;
+            updateStatus("⚡ Running code...", "loading");
+            document.getElementById('run-btn').disabled = true;
+            
+            writeToTerminal("\n🚀 Running Python code...\n");
+            writeToTerminal("═══════════════════════════════════════════════\n");
+            
+            try {
+                // Execute the code
+                await pyodide.runPythonAsync(code);
+                
+                writeToTerminal("\n═══════════════════════════════════════════════\n");
+                writeToTerminal("✅ Code executed successfully!\n\n");
+                updateStatus("✅ Code executed successfully!", "success");
+                
+            } catch (error) {
+                writeToTerminal("\n═══════════════════════════════════════════════\n");
+                writeToTerminal(`❌ Error: ${error.message}\n\n`);
+                updateStatus(`❌ Error: ${error.message}`, "error");
+            } finally {
+                isRunning = false;
+                document.getElementById('run-btn').disabled = false;
+            }
+        }
+        
+        // Write to terminal - FIXED VERSION
+        function writeToTerminal(text) {
+            const terminal = document.getElementById('terminal');
+            
+            // First escape HTML to prevent XSS
+            text = text.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
+            
+            // Convert ANSI colors to HTML - FIXED REGEX SYNTAX
+            text = text
+                .replace(/\x1b\[1;32m/g, '<span class="terminal-success">')
+                .replace(/\x1b\[1;31m/g, '<span class="terminal-error">')
+                .replace(/\x1b\[1;33m/g, '<span class="terminal-info">')
+                .replace(/\x1b\[0m/g, '</span>')
+                .replace(/\n/g, '<br>');
+            
+            terminal.innerHTML += text;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        // Clear terminal
+        function clearTerminal() {
+            if (!isInitialized) {
+                showNotification("Python runtime not loaded", "error");
+                return;
+            }
+            document.getElementById('terminal').innerHTML = '';
+            writeToTerminal('💻 Terminal cleared\n\n');
+        }
+        
+        // Copy terminal content
+        function copyTerminal() {
+            if (!isInitialized) {
+                showNotification("Python runtime not loaded", "error");
+                return;
+            }
+            const terminal = document.getElementById('terminal');
+            const text = terminal.innerText;
+            navigator.clipboard.writeText(text)
+                .then(() => showNotification("Terminal content copied!", "success"))
+                .catch(() => showNotification("Failed to copy", "error"));
+        }
+        
+        // Load example by index
+        function loadExample(index) {
+            if (index >= 0 && index < examples.length) {
+                const example = examples[index];
+                currentExample = example.id;
+                document.getElementById('editor').value = example.code;
+                updateEditorInfo();
+                
+                // Update active card in examples panel
+                const cards = document.querySelectorAll('.example-card');
+                cards.forEach(card => card.classList.remove('active'));
+                if (cards[index]) cards[index].classList.add('active');
+                
+                showNotification(`Loaded: ${example.title}`, "success");
+                writeToTerminal(`📂 Loaded example: ${example.title}\n`);
+            }
+        }
+        
+        // Save code to localStorage
+        function saveCode() {
+            const code = document.getElementById('editor').value;
+            localStorage.setItem('pyodide_ide_code', code);
+            showNotification("Code saved to browser storage", "success");
+            writeToTerminal("💾 Code saved to browser storage\n");
+        }
+        
+        // Install package
+        async function installPackage() {
+            if (!pyodide || !isInitialized) {
+                showNotification("Python runtime not loaded", "error");
+                return;
+            }
+            
+            const packageName = prompt("Enter Python package name to install (e.g., numpy, pandas):\n\nNote: Package must be compatible with Pyodide.");
+            if (!packageName) return;
+            
+            updateStatus(`📦 Installing ${packageName}...`, "loading");
+            writeToTerminal(`📦 Installing ${packageName}...\n`);
+            
+            try {
+                // Load micropip
+                await pyodide.loadPackage(['micropip']);
+                const micropip = pyodide.pyimport('micropip');
+                
+                // Install package
+                await micropip.install(packageName);
+                
+                updateStatus(`✅ ${packageName} installed`, "success");
+                writeToTerminal(`✅ ${packageName} installed successfully!\n`);
+                showNotification(`${packageName} installed`, "success");
+                
+            } catch (error) {
+                updateStatus(`❌ Failed to install ${packageName}`, "error");
+                writeToTerminal(`❌ Failed to install ${packageName}: ${error.message}\n`);
+                showNotification(`Failed to install: ${error.message}`, "error");
+            }
+        }
+        
+        // Show examples panel
+        function showExamplesPanel() {
+            if (!isInitialized) {
+                showNotification("Python runtime not loaded", "error");
+                return;
+            }
+            document.getElementById('examples-panel').classList.add('open');
+            document.getElementById('overlay').classList.add('active');
+        }
+        
+        // Hide examples panel
+        function hideExamplesPanel() {
+            document.getElementById('examples-panel').classList.remove('open');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        // Load examples into panel
+        function loadExamplesToPanel() {
+            const container = document.getElementById('examples-list');
+            container.innerHTML = '';
+            
+            examples.forEach((example, index) => {
+                const card = document.createElement('div');
+                card.className = 'example-card';
+                if (currentExample === example.id) card.classList.add('active');
+                
+                card.innerHTML = `
+                    <div class="example-title">
+                        <span>${example.icon}</span>
+                        ${example.title}
+                    </div>
+                    <div class="example-description">
+                        ${example.description}
+                    </div>
+                    <div class="example-tags">
+                        ${example.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    loadExample(index);
+                    hideExamplesPanel();
+                });
+                
+                container.appendChild(card);
+            });
+        }
+        
+        // Toggle theme
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            const themeBtn = document.getElementById('theme-btn');
+            const icon = themeBtn.querySelector('i');
+            
+            if (isDarkTheme) {
+                icon.className = 'fas fa-moon';
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i> Dark Theme';
+                document.body.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+            } else {
+                icon.className = 'fas fa-sun';
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i> Light Theme';
+                document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
+            }
+        }
+        
+        // Show help
+        function showHelp() {
+            showNotification(
+                "💡 Pyodide IDE Help:\n" +
+                "• Ctrl+Enter: Run code\n" +
+                "• Ctrl+S: Save code\n" +
+                "• Click Examples: Load sample code\n" +
+                "• Install Package: Add Python libraries\n" +
+                "• Clear Terminal: Clear output",
+                "info"
+            );
+        }
+        
+        // Update status
+        function updateStatus(message, type = "") {
+            const statusElement = document.getElementById('status-text');
+            const dot = document.querySelector('.status-dot');
+            
+            statusElement.textContent = message;
+            
+            // Update dot color based on type
+            if (type === "loading") {
+                dot.style.background = "var(--warning)";
+            } else if (type === "error") {
+                dot.style.background = "var(--danger)";
+            } else if (type === "success") {
+                dot.style.background = "var(--success)";
+            } else {
+                dot.style.background = "var(--primary)";
+            }
+        }
+        
+        // Update editor info
+        function updateEditorInfo() {
+            const editor = document.getElementById('editor');
+            const text = editor.value;
+            
+            // Line and column
+            const lines = text.substr(0, editor.selectionStart).split('\n');
+            const line = lines.length;
+            const col = lines[lines.length - 1].length + 1;
+            document.getElementById('line-count').textContent = `Line: ${line}, Col: ${col}`;
+            
+            // Character count
+            const chars = text.length;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('char-count').textContent = `Chars: ${chars}, Words: ${words}`;
+        }
+        
+        // Show notification
+        function showNotification(message, type = "info") {
+            // Remove existing notifications
+            const existing = document.querySelectorAll('.notification');
+            existing.forEach(n => n.remove());
+            
+            // Colors based on type
+            const colors = {
+                'success': '#10b981',
+                'error': '#ef4444',
+                'warning': '#f59e0b',
+                'info': '#6366f1'
+            };
+            
+            const color = colors[type] || colors.info;
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = color;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove after duration
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

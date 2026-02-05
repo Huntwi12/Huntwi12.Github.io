@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="msapplication-TileColor" content="#50514F">
+  <meta name="theme-color" content="#50514F">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Portfolio of William J. Hunt - Professional timeline, projects, skills, and contact information. Living life 8 hours at a time.">
+  <meta name="keywords" content="portfolio, web development, projects, skills, timeline, contact">
+  <meta name="author" content="William J. Hunt">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="William J. Hunt's Portfolio">
+  <meta property="og:description" content="Professional portfolio showcasing projects, skills, and work experience.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain.com">
+  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@williamhunt">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://yourdomain.com">
+  
+  <title>William J. Hunt's Portfolio</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  
+  <!-- AOS (Animate on Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="container" aria-label="Main navigation">
+    <div class="nav-container" role="navigation">
+      <div>
+        <h1 id="name" class="gradient-text nav-title">William J. Hunt</h1>
+      </div>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#hobbies" class="nav-link">Hobbies</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-container">
+      <label for="projectSearch" class="sr-only"></label>
+      <input type="text" 
+             class="search-bar" 
+             id="projectSearch"
+             placeholder=""
+             maxlength="4"
+             pattern="\d{4}"
+             inputmode="numeric"
+             aria-label="">
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="container" id="home">
+    <div class="center-content" data-aos="fade-up">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="gradient-text" id="heroName">William J. Hunt</span>
+        </h1>
+        <p id="jobDescription" class="hero-description">
+          Living Life 8 Hours At A Time
+        </p>
+        
+        <!-- Redesigned Timeline Slider -->
+        <div class="timeline-container" data-aos="fade-up" data-aos-delay="200">
+          <div class="timeline-wrapper" id="timeline">
+            <div class="timeline">
+              <div class="timeline-track">
+                <div class="timeline-progress" id="timelineProgress"></div>
+                <!-- Timeline points will be inserted here -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Job Info Display -->
+          <div class="job-info-container">
+            <div class="job-info">
+              <!-- Job info will be inserted here -->
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Projects Section -->
+    <section id="projects" class="section-spacing">
+      <h2 class="section-title" data-aos="fade-up">
+        <i class="mdi mdi-folder-star section-icon"></i>
+        Projects I've Made 100% On My Own
+      </h2>
+      <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+        Personal projects built from scratch with my own code and design.
+      </p>
+      <div class="grid" id="projectsContainer">
+        <!-- Projects will be inserted here -->
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section-spacing">
+      <h2 class="section-title" data-aos="fade-up">
+        <i class="mdi mdi-tools section-icon"></i>
+        So Called Skills
+      </h2>
+      <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+        Areas where I've developed expertise through hands-on experience and continuous learning.
+      </p>
+      <div class="grid" id="skillsContainer">
+        <!-- Skills will be inserted here (6 boxes) -->
+      </div>
+    </section>
+
+    <!-- Hobbies Section -->
+    <section id="hobbies" class="section-spacing">
+      <h2 class="section-title" data-aos="fade-up">
+        <i class="mdi mdi-heart section-icon"></i>
+        So Called Hobbies
+      </h2>
+      <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+        Activities that keep me engaged outside of work and development.
+      </p>
+      <div class="grid-3" id="hobbiesContainer">
+        <!-- Hobbies will be inserted here (3 boxes) -->
+      </div>
+    </section>
+
+    <!-- Topics Section (Not in navbar) -->
+    <section id="topics" class="topics-section section-spacing">
+      <h2 class="section-title" data-aos="fade-up">
+        <i class="mdi mdi-book-open-variant section-icon"></i>
+        Topics I'm Deepening My Understanding Of
+      </h2>
+      <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+        Current areas of focus and ongoing learning in my personal development journey.
+      </p>
+      <div class="grid" id="topicsContainer">
+        <!-- Topics will be inserted here (3 boxes) -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links" id="footerLinks">
+        <!-- Footer links will be inserted here -->
+      </div>
+      <p class="footer-text">
+        &copy; <span id="currentYear"></span> William J. Hunt. Living life 8 hours at a time.
+      </p>
+      <p class="footer-subtext">
+        Portfolio with project code search functionality
+      </p>
+    </div>
+  </footer>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <!-- JavaScript -->
+  <script src="portfolio-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

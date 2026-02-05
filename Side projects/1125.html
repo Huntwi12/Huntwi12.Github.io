@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Environmental Impact of Data Centers — U.S. Overview</title>
+
+  <!-- Tailwind Play CDN (no build) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* Futuristic accent plus subtle glass */
+    :root{
+      --accent:#6EE7B7; /* mint */
+      --accent-2:#60A5FA; /* blue */
+      --glass: rgba(255,255,255,0.04);
+      --card: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      --mono: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
+    }
+    body { font-family: var(--mono); background: radial-gradient(1200px 600px at 10% 10%, rgba(32,40,60,0.25), transparent), #0b1220; color: #e6eef8; }
+    .glass { background: var(--glass); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.03); }
+    .accent { color: var(--accent); }
+    .pulse-accent { box-shadow: 0 0 20px rgba(110,231,183,0.06); }
+    .fade-in { opacity: 0; transform: translateY(10px); transition: all .7s cubic-bezier(.2,.9,.3,1); }
+    .fade-in.show { opacity: 1; transform: none; }
+    .counter { font-weight: 700; letter-spacing: -0.02em; }
+    .small-muted { color: rgba(230,238,248,0.6); font-size: .95rem; }
+    /* responsive container */
+    .container { max-width: 1100px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    /* CTA */
+    .btn-cta { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#041025; font-weight:700; padding: .75rem 1.25rem; border-radius: .75rem; }
+    footer a { color: rgba(110,231,183,0.9); }
+    /* charts card */
+    .chart-card { height: 300px; }
+    @media (max-width:768px){ .chart-card { height: 240px; } }
+    
+    /* Article styling */
+    .article-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+    .article-container.open { max-height: 800px; }
+    .article-content { padding: 1.5rem; background: rgba(255,255,255,0.02); border-radius: 0.5rem; margin-top: 1rem; }
+    .article-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .article-card { cursor: pointer; transition: all 0.3s ease; }
+    .article-card:hover { transform: translateY(-5px); }
+    .article-icon { width: 24px; height: 24px; transition: transform 0.3s ease; }
+    .article-card.open .article-icon { transform: rotate(180deg); }
+  
+    
+    /* RugPull section styling */
+    .rugpull-section { background: linear-gradient(135deg, rgba(110,231,183,0.05), rgba(96,165,250,0.05)); border: 1px solid rgba(110,231,183,0.1); }
+    .rugpull-title { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  </style>
+</head>
+<body>
+
+  <header class="py-12">
+    <div class="container">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center ring-1 ring-white/3">
+            <!-- simple logo -->
+            <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12h18" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M6 5v14" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round"/>
+              <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6EE7B7"/><stop offset="1" stop-color="#60A5FA"/></linearGradient></defs>
+            </svg>
+          </div>
+          <div>
+            <div class="text-lg font-semibold">Data Center Environmental Brief</div>
+            <div class="text-sm small-muted">U.S. focused • Public-friendly • In-depth</div>
+          </div>
+        </div>
+
+        <div class="hidden md:flex items-center gap-4">
+          <a class="glass px-4 py-2 rounded-lg" href="#resources">Explore Resources</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="container">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">How data centers shape our environment — and what we can do about it</h1>
+        <p class="mt-4 small-muted">Data centers power the internet and modern AI but also consume significant electricity and water, produce waste heat, and affect local communities. This page summarizes the key facts, environmental impacts, and the practical actions operators and policymakers can take today.</p>
+
+        <div class="mt-6 grid grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl glass">
+            <div class="text-xs small-muted">U.S. electricity used (2024)</div>
+            <div class="text-2xl counter accent" data-target="205">0</div>
+            <div class="text-xs small-muted">TWh (≈4.8% of U.S. electricity)</div>
+          </div>
+          <div class="p-4 rounded-xl glass">
+            <div class="text-xs small-muted">Projected range by 2030</div>
+            <div class="text-2xl counter accent" data-target="420">0</div>
+            <div class="text-xs small-muted">TWh (low scenario; high could be 750 TWh)</div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <a class="glass px-4 py-2 rounded-lg" href="#articles">Read Articles</a>
+        </div>
+      </div>
+
+      <!-- Chart area -->
+      <div class="p-6 rounded-2xl glass fade-in" data-fade>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-xs small-muted">Energy trend</div>
+            <div class="text-lg font-semibold">U.S. data center electricity (TWh)</div>
+          </div>
+          <div class="text-xs small-muted">Interactive</div>
+        </div>
+        <div class="chart-card">
+          <canvas id="energyChart"></canvas>
+        </div>
+        <div class="mt-3 text-xs small-muted">Data sources: LBNL, DOE projections (see Learn more).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY FACTS -->
+  <section class="container mt-12">
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h3 class="font-semibold">Key facts</h3>
+        <ul class="mt-4 space-y-3 text-sm small-muted">
+          <li><strong>205 TWh</strong> — estimated U.S. data center electricity use in 2024 (≈4.8% of U.S. electricity).</li>
+          <li><strong>7.5–13.5%</strong> — projected share of U.S. electricity by 2030 under different scenarios.</li>
+          <li><strong>Water risk:</strong> Data center growth can drastically increase cooling water use in stressed basins; some analyses project ~385M → 5.1B gallons.</li>
+          <li><strong>AI acceleration:</strong> Training a single large AI model can consume as much electricity as 100 U.S. homes for a year.</li>
+          <li><strong>Carbon emissions:</strong> Data centers account for approximately 2.5-3.5% of global CO₂ emissions, comparable to the aviation industry.</li>
+        </ul>
+      </div>
+
+      <div class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h3 class="font-semibold">Why it matters</h3>
+        <p class="mt-3 small-muted text-sm">Electricity and water infrastructure are shared public goods. Rapid localized growth of power-hungry facilities can force new transmission builds, strain municipal water supplies, and increase local air pollution when power is fossil-derived.</p>
+        <p class="mt-3 small-muted text-sm">The AI boom has dramatically accelerated energy demand, with some hyperscale data centers now requiring 100-300 MW each—enough to power 80,000-240,000 homes.</p>
+      </div>
+
+      <div class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h3 class="font-semibold">At a glance</h3>
+        <p class="mt-3 small-muted text-sm">Data center impacts are both direct (on-site water use, land clearing, generator emissions) and indirect (electricity generation emissions, grid water use). Mitigation requires coordinated design, siting, and policy.</p>
+        <p class="mt-3 small-muted text-sm">Recent developments show that while efficiency improvements continue (PUEs now averaging 1.5-1.6 for modern facilities), the sheer growth in computing demand is overwhelming these gains.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMBEDDED ARTICLES SECTION -->
+  <section id="articles" class="container mt-12">
+    <h2 class="text-2xl font-extrabold accent">Featured Articles & Research</h2>
+    <p class="small-muted mt-2">In-depth analysis and recent research on data center environmental impacts.</p>
+
+    <div class="mt-6 article-grid">
+      <!-- Article 1 -->
+      <div class="glass p-6 rounded-2xl article-card fade-in" data-fade onclick="toggleArticle('article1')">
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="font-semibold">The AI Energy Dilemma</h4>
+            <p class="mt-2 small-muted text-sm">How artificial intelligence is reshaping data center energy consumption patterns and what it means for sustainability goals.</p>
+          </div>
+          <svg class="article-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div id="article1" class="article-container">
+          <div class="article-content">
+            <h5 class="font-semibold mb-3">The Exponential Growth of AI Compute Demands</h5>
+            <p class="small-muted text-sm mb-3">Recent analysis from the International Energy Agency shows that data centers' electricity consumption could double by 2026, reaching approximately 1,000 TWh globally. This surge is largely driven by the rapid expansion of artificial intelligence and cryptocurrency operations.</p>
+            <p class="small-muted text-sm mb-3">Training a single large language model like GPT-4 can consume enough electricity to power 1,000 average U.S. households for a year. The computational intensity of AI models has been increasing by a factor of 10 every year for the past decade, far outpacing efficiency gains in hardware.</p>
+            <p class="small-muted text-sm">This creates a significant challenge for climate goals, as many regions still rely heavily on fossil fuels for electricity generation. Some utilities are delaying the retirement of coal plants to meet the surging demand from data centers concentrated in specific regions.</p>
+            <div class="mt-4 pt-3 border-t border-white/10">
+              <p class="text-xs small-muted">Source: IEA Electricity 2024 Report, Nature Energy Journal</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 2 -->
+      <div class="glass p-6 rounded-2xl article-card fade-in" data-fade onclick="toggleArticle('article2')">
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="font-semibold">Water Stress & Data Center Siting</h4>
+            <p class="mt-2 small-muted text-sm">Examining the relationship between data center locations and water-scarce regions in the United States.</p>
+          </div>
+          <svg class="article-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div id="article2" class="article-container">
+          <div class="article-content">
+            <h5 class="font-semibold mb-3">The Hidden Water Footprint of Cloud Computing</h5>
+            <p class="small-muted text-sm mb-3">A 2024 study from researchers at Virginia Tech reveals that data centers in water-stressed regions like Arizona, Nevada, and parts of Texas are consuming increasingly significant portions of local water resources. Some hyperscale facilities use 3-5 million gallons of water daily for cooling—equivalent to the consumption of a city of 30,000-50,000 people.</p>
+            <p class="small-muted text-sm mb-3">The research highlights that data center operators often choose these regions for their tax incentives and available land, without fully accounting for the long-term water sustainability implications. In Arizona's Phoenix metropolitan area, data centers now account for approximately 5% of the region's total water consumption.</p>
+            <p class="small-muted text-sm">The study recommends that local governments implement water impact assessments as part of the approval process for new data centers, particularly in regions already experiencing water stress. Alternative cooling technologies, such as air-cooled systems or reclaimed water use, could significantly reduce freshwater consumption.</p>
+            <div class="mt-4 pt-3 border-t border-white/10">
+              <p class="text-xs small-muted">Source: Virginia Tech Environmental Research, 2024</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="glass p-6 rounded-2xl article-card fade-in" data-fade onclick="toggleArticle('article3')">
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="font-semibold">Waste Heat Recovery Innovations</h4>
+            <p class="mt-2 small-muted text-sm">Exploring how data center waste heat is being repurposed for community heating and industrial applications.</p>
+          </div>
+          <svg class="article-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div id="article3" class="article-container">
+          <div class="article-content">
+            <h5 class="font-semibold mb-3">Turning Data Center Heat into Community Assets</h5>
+            <p class="small-muted text-sm mb-3">Microsoft's project in Finland demonstrates how data center waste heat can be effectively captured and distributed to heat approximately 6,000 homes in the surrounding community. The system captures low-grade heat (typically 25-35°C) and uses heat pumps to increase the temperature to levels suitable for district heating networks (70-95°C).</p>
+            <p class="small-muted text-sm mb-3">Similar projects are underway in Denmark, Sweden, and Ireland, where data centers are being integrated into existing district heating infrastructure. Up to 40-50% of data center energy consumption can be recovered as usable heat with proper capture systems.</p>
+            <p class="small-muted text-sm">New immersion cooling technologies make waste heat capture more efficient for high-density computing. These systems transfer heat directly to a liquid medium, which can then be piped to heat exchangers with minimal energy loss. The economic viability of these projects depends on proximity to heat customers and supportive policy frameworks.</p>
+            <div class="mt-4 pt-3 border-t border-white/10">
+              <p class="text-xs small-muted">Source: Microsoft Sustainability Report, EU Heat Roadmap Europe</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 4 -->
+      <div class="glass p-6 rounded-2xl article-card fade-in" data-fade onclick="toggleArticle('article4')">
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="font-semibold">Policy Responses to Data Center Growth</h4>
+            <p class="mt-2 small-muted text-sm">How governments are adapting regulations to address the environmental impacts of data center expansion.</p>
+          </div>
+          <svg class="article-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div id="article4" class="article-container">
+          <div class="article-content">
+            <h5 class="font-semibold mb-3">Regulatory Approaches to Sustainable Data Infrastructure</h5>
+            <p class="small-muted text-sm mb-3">Ireland and Singapore have implemented moratoriums on new data center construction until comprehensive environmental impact assessments can be completed. These jurisdictions are developing new frameworks that require data centers to meet specific energy efficiency, water usage, and carbon emission standards.</p>
+            <p class="small-muted text-sm mb-3">In the United States, Virginia—home to "Data Center Alley"—has introduced legislation requiring data centers to meet minimum energy efficiency standards and contribute to grid modernization costs. Some localities are implementing impact fees to offset the infrastructure costs associated with data center development.</p>
+            <p class="small-muted text-sm">The European Union's Energy Efficiency Directive now includes specific provisions for data centers, requiring transparency in energy and water consumption reporting. These policy developments reflect growing recognition that the environmental impacts of data centers need to be managed through coordinated regulatory approaches.</p>
+            <div class="mt-4 pt-3 border-t border-white/10">
+              <p class="text-xs small-muted">Source: EU Energy Efficiency Directive, Virginia State Legislation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADDITIONAL RESOURCES SECTION -->
+  <section id="resources" class="container mt-12">
+    <h2 class="text-2xl font-extrabold accent">Additional Resources & Research</h2>
+    <p class="small-muted mt-2">External articles and studies providing deeper insights into data center environmental impacts.</p>
+
+    <div class="mt-6 resource-grid">
+      <!-- Resource 1 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">The Real Safety Risks of Data Centers</h4>
+        <p class="mt-2 small-muted text-sm">What local communities need to know about potential hazards from data center operations, including chemical risks, fire safety, and emergency response planning.</p>
+        <div class="mt-4">
+          <a href="https://conimby.org/blog/2025/09/12/the-real-safety-risks-of-data-centers-what-local-communities-need-to-know/" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 2 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">AI's Environmental Impacts</h4>
+        <p class="mt-2 small-muted text-sm">Smithsonian Magazine examines how the rise of artificial intelligence is accelerating data center energy demands and what this means for environmental sustainability.</p>
+        <div class="mt-4">
+          <a href="https://www.smithsonianmag.com/science-nature/with-ai-on-the-rise-what-will-be-the-environmental-impacts-of-data-centers-180987379/" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 3 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">Sustainable Data Center Operations</h4>
+        <p class="mt-2 small-muted text-sm">Scientific review of strategies for improving energy efficiency and reducing environmental impacts in data center operations through advanced cooling and power management.</p>
+        <div class="mt-4">
+          <a href="https://www.sciencedirect.com/science/article/pii/S2772985025000262" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 4 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">Local Government Considerations</h4>
+        <p class="mt-2 small-muted text-sm">National League of Cities guide for municipal leaders on addressing data center environmental impacts through zoning, permitting, and community engagement.</p>
+        <div class="mt-4">
+          <a href="https://www.nlc.org/article/2025/05/23/data-centers-and-local-environmental-considerations/" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 5 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">Generative AI Environmental Impact</h4>
+        <p class="mt-2 small-muted text-sm">MIT researchers explain the carbon footprint of training and running large generative AI models and explore potential mitigation strategies.</p>
+        <div class="mt-4">
+          <a href="https://news.mit.edu/2025/explained-generative-ai-environmental-impact-0117" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 6 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">Policy Solutions for Community Impacts</h4>
+        <p class="mt-2 small-muted text-sm">University of Michigan analysis of how data center growth affects local communities and the policy frameworks needed to mitigate negative impacts.</p>
+        <div class="mt-4">
+          <a href="https://fordschool.umich.edu/news/2025/growth-data-centers-requires-new-policies-mitigate-local-community-impacts" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 7 -->
+      <div class="glass p-6 rounded-2xl resource-card fade-in" data-fade>
+        <h4 class="font-semibold">Comprehensive Environmental Analysis</h4>
+        <p class="mt-2 small-muted text-sm">Stax Engineering's detailed assessment of data center environmental impacts across energy, water, land use, and emissions dimensions.</p>
+        <div class="mt-4">
+          <a href="https://www.staxengineering.com/stax-hub/the-environmental-impact-of-data-centers/" target="_blank" class="external-link">
+            <span>Read full article</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACTS -->
+  <section id="impacts" class="container mt-12">
+    <h2 class="text-2xl font-extrabold accent">Impacts on the environment</h2>
+    <p class="small-muted mt-2">Detailed but readable breakdown of how data centers interact with environmental systems in the U.S.</p>
+
+    <div class="mt-6 grid md:grid-cols-2 gap-6">
+      <!-- Energy -->
+      <article class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h4 class="font-semibold">Energy & greenhouse gases</h4>
+        <p class="mt-2 small-muted">Data centers consumed ≈205 TWh in 2024 — about 4.8% of U.S. electricity. This consumption grew quickly after 2022 because of GPU-accelerated AI servers. If growth continues under some scenarios, data centers could consume between ~420 and 750 TWh by 2030, which would be ~7.5–13.5% of U.S. electricity.</p>
+        <ul class="mt-3 text-sm small-muted space-y-2">
+          <li>Operational electricity (servers + cooling) dominates lifecycle impacts vs. embodied construction energy.</li>
+          <li>Clusters of data centers often require new substations and transmission upgrades.</li>
+          <li>AI workloads are particularly energy-intensive, with some large language model training runs consuming over 1,000 MWh.</li>
+        </ul>
+      </article>
+
+      <!-- Water -->
+      <article class="glass p-6 rounded-2xl fade-in" data-fade>
+        <h4 class="font-semibold">Water consumption & water stress</h4>
+        <p class="mt-2 small-muted">Many conventional cooling systems use evaporative or wet cooling that consumes water. Recent analyses find data center water demand is concentrated geographically: a small number of basins host a large share of compute capacity.</p>
+        <ul class="mt-3 text-sm small-muted space-y-2">
+          <li>Some hyperscale data centers consume 3-5 million gallons of water per day.</li>
+          <li>In Arizona, data centers now account for approximately 5% of the state's total water consumption.</li>
+          <li>Liquid cooling for AI workloads can reduce energy use but may increase water consumption.</li>
+        </ul>
+        <div class="mt-3">
+          <canvas id="waterChart" class="w-full"></canvas>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- MITIGATION -->
+  <section class="container mt-12">
+    <div class="glass p-6 rounded-2xl fade-in" data-fade>
+      <h2 class="text-2xl font-extrabold accent">Mitigation & best practices</h2>
+      <p class="small-muted mt-2">Actions that materially reduce environmental impacts.</p>
+
+      <div class="mt-4 grid md:grid-cols-3 gap-4">
+        <div class="p-4 rounded-lg">
+          <h5 class="font-semibold">Energy efficiency</h5>
+          <p class="small-muted text-sm mt-2">Improve server utilization, use efficient hardware, and adopt liquid cooling where efficient to reduce energy per compute.</p>
+        </div>
+
+        <div class="p-4 rounded-lg">
+          <h5 class="font-semibold">Clean power & timing</h5>
+          <p class="small-muted text-sm mt-2">Procure renewables, time-shift heavy workloads to hours with cleaner grid mixes, and invest in on-site renewables + storage.</p>
+        </div>
+
+        <div class="p-4 rounded-lg">
+          <h5 class="font-semibold">Water-wise cooling</h5>
+          <p class="small-muted text-sm mt-2">Favor closed-loop, air/dry cooling, or reuse reclaimed water—especially in water-stressed basins.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE RUGPULL SECTION -->
+  <section id="rugpull" class="container mt-12">
+    <div class="rugpull-section p-8 rounded-2xl fade-in" data-fade>
+      <h2 class="text-2xl md:text-3xl font-extrabold rugpull-title mb-4">The RugPull: Big Beautiful Bill</h2>
+      <p class="small-muted mb-4">Analysis of the White House Executive Order "Accelerating Federal Permitting of Data Center Infrastructure" (July 2025)</p>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold mb-3">What the Executive Order Does</h4>
+          <ul class="space-y-3 text-sm small-muted">
+            <li><strong>Fast-tracks permitting:</strong> Designates data centers as "critical infrastructure" to expedite federal approval processes</li>
+            <li><strong>Streamlines environmental reviews:</strong> Requires agencies to complete NEPA reviews within 2 years for data center projects</li>
+            <li><strong>Creates interagency task force:</strong> Establishes a council to coordinate federal support for data center development</li>
+            <li><strong>Prioritizes grid connections:</strong> Directs federal agencies to prioritize data center interconnections to transmission systems</li>
+            <li><strong>Accelerates right-of-way approvals:</strong> Speeds up permitting for transmission lines needed to serve data centers</li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-3">The Environmental Paradox</h4>
+          <ul class="space-y-3 text-sm small-muted">
+            <li><strong>Accelerates climate impacts:</strong> Faster approvals mean less time for comprehensive environmental review of energy and water impacts</li>
+            <li><strong>Undermines climate goals:</strong> Could lock in fossil fuel dependencies by prioritizing speed over clean energy integration</li>
+            <li><strong>Water concerns sidelined:</strong> Expedited process may bypass thorough assessment of local water stress impacts</li>
+            <li><strong>Community input reduced:</strong> Shorter timelines limit meaningful public participation in siting decisions</li>
+            <li><strong>Grid strain intensified:</strong> Prioritizing data center connections could overwhelm already constrained transmission systems</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-6 p-4 rounded-lg glass">
+        <h4 class="font-semibold mb-3">The Bottom Line</h4>
+        <p class="small-muted text-sm">While the executive order aims to maintain U.S. competitiveness in AI and digital infrastructure, it creates significant tension with environmental protection goals. By fast-tracking data center development without robust environmental safeguards, the policy risks exacerbating the very climate and community impacts detailed throughout this website.</p>
+        <p class="small-muted text-sm mt-3">The "Big Beautiful Bill" represents a classic "rug pull" - promising technological progress while potentially undermining the environmental foundations that make sustainable progress possible.</p>
+        <div class="mt-4 pt-3 border-t border-white/10">
+          <a href="https://www.whitehouse.gov/presidential-actions/2025/07/accelerating-federal-permitting-of-data-center-infrastructure/" target="_blank" class="external-link">
+            <span>Read the full executive order</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARN MORE / REFERENCES -->
+  <section class="container mt-10 mb-20">
+    <div class="glass p-6 rounded-2xl fade-in" data-fade>
+      <h3 class="font-semibold">Learn more / sources</h3>
+      <ol class="mt-3 text-sm small-muted list-decimal pl-5 space-y-1">
+        <li>Lawrence Berkeley National Laboratory — 2024 United States Data Center Energy Usage Report.</li>
+        <li>U.S. Department of Energy summary on rising electricity demand from data centers.</li>
+        <li>International Energy Agency (IEA) — Data Centres and Data Transmission Networks report (2024).</li>
+        <li>Nature — "The growing environmental footprint of artificial intelligence" (2024).</li>
+        <li>The White House — "Accelerating Federal Permitting of Data Center Infrastructure" Executive Order (July 2025).</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="py-8">
+    <div class="container small-muted text-sm">
+      <div class="flex flex-col md:flex-row md:justify-between">
+        <div>Created: Nov 11, 2025 — Public-friendly summary of environmental impacts of data centers (U.S.).</div>
+        <div class="mt-2 md:mt-0">This Website Was Made With An AI Driven Datacenter.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* IntersectionObserver for fade-ins */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('[data-fade]').forEach(el => { observer.observe(el); });
+
+    /* Animated counters */
+    function animateCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        const target = +el.dataset.target;
+        const duration = 1400;
+        const step = (timestamp) => {
+          const start = el._startTime || performance.now();
+          if (!el._startTime) el._startTime = start;
+          const elapsed = performance.now() - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const value = Math.floor(progress * target);
+          el.textContent = value.toLocaleString();
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }
+
+    // Run counters when hero is in view
+    const hero = document.querySelector('header');
+    const heroObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) { animateCounters(); heroObs.disconnect(); }
+    }, { threshold: 0.1 });
+    heroObs.observe(hero);
+
+    /* Chart.js: energy trend */
+    const energyCtx = document.getElementById('energyChart').getContext('2d');
+    const energyChart = new Chart(energyCtx, {
+      type: 'line',
+      data: {
+        labels: ['2014','2018','2020','2022','2024','2030 (low)','2030 (high)'],
+        datasets: [{
+          label: 'Data center electricity (TWh)',
+          data: [58, 76, 110, 150, 205, 420, 750],
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 4,
+          borderColor: 'rgba(96,165,250,0.95)',
+          backgroundColor: (ctx) => {
+            const grad = ctx.chart.ctx.createLinearGradient(0,0,0,300);
+            grad.addColorStop(0,'rgba(96,165,250,0.12)');
+            grad.addColorStop(1,'rgba(6,9,24,0)');
+            return grad;
+          },
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => v + ' TWh' } }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (ctx) => ctx.parsed.y + ' TWh' } }
+        }
+      }
+    });
+
+    /* Chart.js: water bar chart */
+    const waterCtx = document.getElementById('waterChart').getContext('2d');
+    const waterChart = new Chart(waterCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Baseline (example)','Projected (example)'],
+        datasets: [{
+          label: 'Cooling water (million gallons/year)',
+          data: [385, 5100],
+          borderRadius: 6,
+          borderSkipped: false,
+          backgroundColor: 'rgba(110,231,183,0.7)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => v >= 1000 ? (v/1000) + 'B' : v + 'M' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    /* Article toggle functionality */
+    function toggleArticle(articleId) {
+      const article = document.getElementById(articleId);
+      const articleCard = article.parentElement;
+      const isOpen = article.classList.contains('open');
+      
+      // Close all articles first
+      document.querySelectorAll('.article-container').forEach(container => {
+        container.classList.remove('open');
+        container.parentElement.classList.remove('open');
+      });
+      
+      // If the clicked article wasn't open, open it
+      if (!isOpen) {
+        article.classList.add('open');
+        articleCard.classList.add('open');
+      }
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot-Dip Aluminizing Process | Industrial Coating Technology</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #E74C3C;
+            --accent: #3498DB;
+            --light: #ECF0F1;
+            --dark: #1A252F;
+            --gray: #7F8C8D;
+            --steel: #5D6D7E;
+            --aluminum: #BDC3C7;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --border: #D5DBDB;
+            --danger: #C0392B;
+            --info: #2980B9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 37, 47, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        
+        .logo h2 {
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 37, 47, 0.9), rgba(26, 37, 47, 0.95)), url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 6rem 2rem 4rem;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .hero-badge {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hero-badge i {
+            color: var(--accent);
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-header i {
+            background: var(--accent);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-right: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin: 0;
+        }
+        
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-icon {
+            background: var(--light);
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .card p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .card-feature {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .card-feature:last-child {
+            border-bottom: none;
+        }
+        
+        .card-feature i {
+            color: var(--accent);
+            margin-right: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Process Visualization */
+        .process-visual {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border);
+            z-index: 1;
+        }
+        
+        .process-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .step-number {
+            background: white;
+            border: 3px solid var(--accent);
+            color: var(--accent);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0 auto 1rem;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .step-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        /* Charts */
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Large Chart Container for Thermal Dynamics */
+        .large-chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .large-chart-container .chart-wrapper {
+            flex: 1;
+            min-height: 400px;
+        }
+        
+        /* Interactive Elements */
+        .selector-tool {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .selector-question {
+            margin-bottom: 2rem;
+        }
+        
+        .selector-question h3 {
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .selector-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        
+        .selector-option {
+            padding: 1.2rem;
+            background: var(--light);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .selector-option:hover {
+            border-color: var(--accent);
+            background: rgba(52, 152, 219, 0.05);
+        }
+        
+        .selector-option.selected {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+        
+        .selector-option i {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .simulator-result {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            animation: slideIn 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: var(--light);
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--gray);
+        }
+        
+        .tab.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Comparison Table */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+        }
+        
+        /* Footer - Simplified for disclosure */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .disclosure {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .disclosure h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .disclosure p {
+            color: #BDC3C7;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #95A5A6;
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .cta-button:hover {
+            background: #C0392B;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .cta-button.secondary {
+            background: var(--accent);
+        }
+        
+        .cta-button.secondary:hover {
+            background: #2980B9;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .process-steps {
+                flex-wrap: wrap;
+            }
+            
+            .process-step {
+                flex: 0 0 33.333%;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 4rem 1rem 3rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .process-step {
+                flex: 0 0 50%;
+            }
+            
+            .selector-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .large-chart-container {
+                padding: 1rem;
+                min-height: 400px;
+            }
+            
+            .large-chart-container .chart-wrapper {
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .process-step {
+                flex: 0 0 100%;
+            }
+            
+            .hero-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Industrial Details */
+        .industrial-detail {
+            position: relative;
+        }
+        
+        .industrial-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+        
+        .metal-texture {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .bolt-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            background: var(--steel);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .bolt-icon::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 11px;
+            width: 2px;
+            height: 12px;
+            background: #95A5A6;
+        }
+        
+        .bolt-icon::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 7px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--light);
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            color: var(--gray);
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        /* Thermal Chart Info */
+        .chart-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .chart-info-item {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .chart-info-item h4 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-info-item p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* NEW: Detailed Atmosphere Control Cards */
+        .atmosphere-control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+        
+        .atmosphere-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .atmosphere-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .atmosphere-card.hydrogen {
+            border-top-color: var(--danger);
+        }
+        
+        .atmosphere-card.oxygen {
+            border-top-color: var(--info);
+        }
+        
+        .atmosphere-card.moisture {
+            border-top-color: var(--warning);
+        }
+        
+        .atmosphere-card.nitrogen {
+            border-top-color: var(--accent);
+        }
+        
+        .atmosphere-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .atmosphere-card h3 i {
+            font-size: 1.2rem;
+        }
+        
+        .atmosphere-card .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .atmosphere-card .metric-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+        
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .risk-high {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .risk-medium {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .risk-low {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Process Parameter Tables */
+        .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .parameter-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .parameter-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #eee;
+            color: var(--gray);
+        }
+        
+        .parameter-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .parameter-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* NEW: Process Control Zone */
+        .process-control-zone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .control-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .control-metric:last-child {
+            border-bottom: none;
+        }
+        
+        .control-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .control-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        /* NEW: Gas Mixture Visualization */
+        .gas-mixture-viz {
+            display: flex;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .gas-component {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .gas-component:hover {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+        
+        /* NEW: Safety Warning Box */
+        .safety-warning {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .safety-warning h4 {
+            color: var(--danger);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* NEW: Process Flow Diagram */
+        .process-flow {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .flow-step-number {
+            background: var(--accent);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .flow-step-content {
+            flex: 1;
+        }
+        
+        .flow-step-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .flow-step-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-industry"></i>
+            <h2>Hot-Dip Aluminizing</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#process">The Process</a></li>
+            <li><a href="#furnace">Furnace Control</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#applications">Applications</a></li>
+            <li><a href="#comparison">Comparison</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1>Hot-Dip Aluminizing Process</h1>
+            <p>Transforming steel with a protective aluminum coating through precise furnace control and metallurgical bonding</p>
+            
+            <div class="hero-badges">
+                <div class="hero-badge">
+                    <i class="fas fa-temperature-high"></i>
+                    <span>680-780°C Process</span>
+                </div>
+                <div class="hero-badge">
+                    <i class="fas fa-wind"></i>
+                    <span>Controlled Atmosphere</span>
+                </div>
+                <div class="hero-badge">
+                    <i class="fas fa-fire"></i>
+                    <span>High-Temperature Resistant</span>
+                </div>
+            </div>
+            
+            <a href="#process" class="cta-button" style="margin-top: 2rem;">
+                <i class="fas fa-play-circle"></i> Explore The Process
+            </a>
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="section" id="introduction">
+            <div class="section-header">
+                <i class="fas fa-industry"></i>
+                <div>
+                    <h2 class="section-title">What is Hot-Dip Aluminizing?</h2>
+                    <p class="section-subtitle">A metallurgical process that bonds aluminum to steel for enhanced durability</p>
+                </div>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>High-Temperature Protection</h3>
+                    <p>Forms a protective aluminum oxide layer that prevents oxidation at temperatures up to 900°C.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Resists scaling up to 900°C</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Maintains integrity in thermal cycling</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-umbrella"></i>
+                    </div>
+                    <h3>Corrosion Resistance</h3>
+                    <p>Provides 3-5 times better atmospheric corrosion resistance than galvanized steel.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Excellent for marine environments</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Resists industrial pollutants</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Industrial Applications</h3>
+                    <p>Used across automotive, construction, appliance, and chemical processing industries.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Automotive exhaust systems</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Building cladding & roofing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="section industrial-detail" id="process">
+            <div class="section-header">
+                <i class="fas fa-tools"></i>
+                <div>
+                    <h2 class="section-title">The Hot-Dip Aluminizing Process</h2>
+                    <p class="section-subtitle">Step-by-step transformation of steel into aluminized steel</p>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('process-steps', this)">Process Steps</button>
+                <button class="tab" onclick="switchTab('thermal-dynamics', this)">Thermal Dynamics</button>
+                <button class="tab" onclick="switchTab('coating-formation', this)">Coating Formation</button>
+            </div>
+            
+            <div id="process-steps-tab" class="tab-content active">
+                <div class="process-visual">
+                    <h3>8-Step Manufacturing Process</h3>
+                    <p>The hot-dip aluminizing process involves carefully controlled stages to ensure optimal coating adhesion and quality.</p>
+                    
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-title">Surface Cleaning</div>
+                            <div class="step-desc">Removing oils, dirt, and oxides from steel surface</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">Pickling</div>
+                            <div class="step-desc">Acid treatment to remove mill scale and rust</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-title">Fluxing</div>
+                            <div class="step-desc">Applying protective layer to prevent oxidation</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Preheating</div>
+                            <div class="step-desc">Heating to 600-700°C in controlled atmosphere</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">5</div>
+                            <div class="step-title">Aluminum Bath</div>
+                            <div class="step-desc">Immersion in molten aluminum at 680-780°C</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">6</div>
+                            <div class="step-title">Intermetallic Formation</div>
+                            <div class="step-desc">Aluminum reacts with iron to form Fe-Al layers</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">7</div>
+                            <div class="step-title">Cooling</div>
+                            <div class="step-desc">Controlled cooling to optimize coating structure</div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">8</div>
+                            <div class="step-title">Inspection</div>
+                            <div class="step-desc">Quality control and coating thickness verification</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Process Flow -->
+                <div class="process-flow">
+                    <h3>Detailed Process Flow with Critical Parameters</h3>
+                    
+                    <div class="flow-step">
+                        <div class="flow-step-number">1</div>
+                        <div class="flow-step-content">
+                            <h4>Degreasing & Cleaning</h4>
+                            <p>Alkaline cleaning at 60-80°C for 2-3 minutes to remove oils and organic contaminants. Critical for surface preparation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-step-number">2</div>
+                        <div class="flow-step-content">
+                            <h4>Pickling (Acid Treatment)</h4>
+                            <p>Hydrochloric acid (15-20%) or sulfuric acid (5-10%) at 40-60°C for 3-5 minutes to remove mill scale and rust.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-step-number">3</div>
+                        <div class="flow-step-content">
+                            <h4>Rinsing & Drying</h4>
+                            <p>Multiple rinses with demineralized water (conductivity < 50 μS/cm) followed by hot air drying at 120-150°C.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-step-number">4</div>
+                        <div class="flow-step-content">
+                            <h4>Flux Application</h4>
+                            <p>Zinc ammonium chloride flux (ZnCl₂·3NH₄Cl) applied to prevent oxidation before entering furnace.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="thermal-dynamics-tab" class="tab-content">
+                <!-- Thermal Dynamics Graph -->
+                <div class="large-chart-container">
+                    <h3>Thermal Dynamics by Sheet Gauge</h3>
+                    <p>This chart shows how optimal bath temperature and dipping time must be adjusted based on sheet thickness to maintain proper intermetallic layer formation (5-8 μm target).</p>
+                    <div class="chart-wrapper">
+                        <div id="thermalChart" style="width:100%; height:100%;"></div>
+                    </div>
+                    <div class="chart-info">
+                        <div class="chart-info-item">
+                            <h4><i class="fas fa-exclamation-triangle" style="color: #E74C3C;"></i> Thick Gauge (.130") Challenge</h4>
+                            <p>Acts as heat sink, requires higher preheat to prevent premature solidification. Higher heat capacity demands longer immersion times.</p>
+                        </div>
+                        <div class="chart-info-item">
+                            <h4><i class="fas fa-exclamation-triangle" style="color: #F39C12;"></i> Thin Gauge (.018") Challenge</h4>
+                            <p>Rapid heating risk, requires shorter dip times to prevent excessive intermetallic growth. Lower heat capacity allows faster processing.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Thick Gauge Processing (.090" - .130")</h3>
+                        <p><strong>Thermal Characteristic:</strong> High heat capacity (150-220 kJ/m²·°C)</p>
+                        <p><strong>Preheat Requirement:</strong> 650-700°C minimum surface temperature</p>
+                        <p><strong>Dipping Time:</strong> 12-20 seconds for full diffusion</p>
+                        <p><strong>Cooling Rate:</strong> 15-25°C/second to control layer growth</p>
+                    </div>
+                    <div class="card">
+                        <h3>Thin Gauge Processing (.018" - .050")</h3>
+                        <p><strong>Thermal Characteristic:</strong> Low heat capacity (25-70 kJ/m²·°C)</p>
+                        <p><strong>Preheat Requirement:</strong> 620-660°C to prevent overheating</p>
+                        <p><strong>Dipping Time:</strong> 3-8 seconds maximum</p>
+                        <p><strong>Cooling Rate:</strong> 40-60°C/second rapid quenching</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="coating-formation-tab" class="tab-content">
+                <h3>Coating Formation Mechanism</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Stage 1: Initial Reaction</h3>
+                        <p>Upon immersion, aluminum reacts with iron to form FeAl₃ (θ-phase) at the interface. This occurs within 1-2 seconds at 700°C.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-atom"></i>
+                            <span>Reaction: Fe + 3Al → FeAl₃</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Stage 2: Diffusion Layer Growth</h3>
+                        <p>Fe diffuses through FeAl₃ layer to form Fe₂Al₅ (η-phase) at the steel interface. Growth rate: 1-2 μm/s at 700°C.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-expand-alt"></i>
+                            <span>Diffusion-controlled growth</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Stage 3: Silicon Effect</h3>
+                        <p>In Al-Si baths, silicon reduces Fe₂Al₅ growth and promotes FeAl₃ formation, resulting in thinner, more ductile layers.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-vial"></i>
+                            <span>Si content: 9-11% in Type 1 coatings</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">Intermetallic Layer Growth Over Time</h3>
+                    <div id="layerGrowthChart" style="width:100%; height:300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: Furnace Environment Section -->
+        <section class="section industrial-detail" id="furnace">
+            <div class="section-header">
+                <i class="fas fa-wind"></i>
+                <div>
+                    <h2 class="section-title">Furnace Atmosphere Control</h2>
+                    <p class="section-subtitle">Critical control of hydrogen, oxygen, and moisture levels for quality aluminizing</p>
+                </div>
+            </div>
+            
+            <div class="atmosphere-control-grid">
+                <div class="atmosphere-card hydrogen">
+                    <h3><i class="fas fa-atom" style="color: var(--danger);"></i> Hydrogen Control</h3>
+                    <div class="metric-value">≤ 1000 ppm</div>
+                    <div class="metric-label">Maximum Allowable Concentration</div>
+                    
+                    <div class="risk-indicator risk-high">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Hydrogen Embrittlement Risk</span>
+                    </div>
+                    
+                    <p><strong>Mechanism:</strong> H₂ dissociates at steel surface (600-700°C) → H atoms diffuse into steel matrix → Causes hydrogen-induced cracking.</p>
+                    
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Steel Type</th>
+                            <th>Max H₂ Level</th>
+                            <th>Risk Level</th>
+                        </tr>
+                        <tr>
+                            <td>Mild Steel (<275 MPa)</td>
+                            <td>1000 ppm</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>High-Strength Steel (275-550 MPa)</td>
+                            <td>500 ppm</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Advanced High-Strength Steel (>550 MPa)</td>
+                            <td>300 ppm</td>
+                            <td>High</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="safety-warning">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Critical Safety Warning</h4>
+                        <p>Hydrogen absorption increases exponentially above 400°C. For high-strength steels (≥800 MPa), furnace temperature should be limited to 600°C maximum with hydrogen levels below 300 ppm. Post-coating baking at 200°C for 24 hours can help diffuse out trapped hydrogen.</p>
+                    </div>
+                </div>
+                
+                <div class="atmosphere-card oxygen">
+                    <h3><i class="fas fa-wind" style="color: var(--info);"></i> Oxygen Control</h3>
+                    <div class="metric-value">≤ 10 ppm</div>
+                    <div class="metric-label">Maximum Allowable Concentration</div>
+                    
+                    <div class="risk-indicator risk-high">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Oxidation Risk</span>
+                    </div>
+                    
+                    <p><strong>Mechanism:</strong> O₂ reacts with steel surface forming FeO/Fe₂O₃ → Prevents proper wetting → Causes coating discontinuities.</p>
+                    
+                    <p><strong>Detection:</strong> Zirconia oxygen sensors with 1 ppm resolution required for precise control.</p>
+                    
+                    <div class="gas-mixture-viz">
+                        <div class="gas-component" style="background: #3498db; width: 95%;">N₂: 95%</div>
+                        <div class="gas-component" style="background: #2ecc71; width: 5%;">H₂: 5%</div>
+                    </div>
+                    
+                    <p><strong>Control Strategy:</strong> Positive pressure (2-5 mbar) with nitrogen blanket prevents air ingress. Maintain reducing conditions (H₂/H₂O ratio > 10).</p>
+                </div>
+                
+                <div class="atmosphere-card moisture">
+                    <h3><i class="fas fa-tint" style="color: var(--warning);"></i> Moisture Control</h3>
+                    <div class="metric-value">≤ -30°C</div>
+                    <div class="metric-label">Dew Point (Equivalent to ~300 ppm H₂O)</div>
+                    
+                    <div class="risk-indicator risk-medium">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Double Risk Factor</span>
+                    </div>
+                    
+                    <p><strong>Mechanism:</strong> H₂O dissociates at high temperature: H₂O → H₂ + ½O₂ → Source of both hydrogen AND oxygen.</p>
+                    
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Dew Point</th>
+                            <th>H₂O Concentration</th>
+                            <th>Risk Level</th>
+                        </tr>
+                        <tr>
+                            <td>-30°C</td>
+                            <td>300 ppm</td>
+                            <td>Acceptable</td>
+                        </tr>
+                        <tr>
+                            <td>-40°C</td>
+                            <td>127 ppm</td>
+                            <td>Good</td>
+                        </tr>
+                        <tr>
+                            <td>-50°C</td>
+                            <td>39 ppm</td>
+                            <td>Excellent</td>
+                        </tr>
+                    </table>
+                    
+                    <p><strong>Drying Systems:</strong> Molecular sieve desiccants or refrigerant dryers required. Chilled mirror hygrometers for accurate measurement.</p>
+                </div>
+            </div>
+            
+            <!-- Process Control Zone -->
+            <div class="process-control-zone">
+                <h3 style="color: white;">Optimal Process Control Parameters</h3>
+                
+                <div class="control-metric">
+                    <div class="control-label">Furnace Temperature Range</div>
+                    <div class="control-value">600-700°C</div>
+                </div>
+                
+                <div class="control-metric">
+                    <div class="control-label">Line Speed (Continuous)</div>
+                    <div class="control-value">30-120 m/min</div>
+                </div>
+                
+                <div class="control-metric">
+                    <div class="control-label">Preheat Time</div>
+                    <div class="control-value">30-90 seconds</div>
+                </div>
+                
+                <div class="control-metric">
+                    <div class="control-label">Pressure Differential</div>
+                    <div class="control-value">+2 to +5 mbar</div>
+                </div>
+            </div>
+            
+            <!-- Gas Mixture Optimization -->
+            <div class="process-visual">
+                <h3>Nitrogen-Hydrogen Gas Mixture Optimization</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                    <div class="gas-mixture-viz" style="height: 80px;">
+                        <div class="gas-component" style="background: #3498db; width: 95%; font-size: 1.1rem;">N₂: 95%</div>
+                        <div class="gas-component" style="background: #2ecc71; width: 5%; font-size: 1.1rem;">H₂: 5%</div>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <h4>Standard Carbon Steel</h4>
+                        <p>Good oxide reduction, economical. Risk of H-embrittlement above 600°C.</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                    <div class="gas-mixture-viz" style="height: 80px;">
+                        <div class="gas-component" style="background: #3498db; width: 97%; font-size: 1.1rem;">N₂: 97%</div>
+                        <div class="gas-component" style="background: #2ecc71; width: 3%; font-size: 1.1rem;">H₂: 3%</div>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <h4>High-Strength Low-Alloy Steel</h4>
+                        <p>Reduced H-absorption. Less reducing power requires excellent furnace sealing.</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                    <div class="gas-mixture-viz" style="height: 80px;">
+                        <div class="gas-component" style="background: #3498db; width: 99%; font-size: 1.1rem;">N₂: 99%</div>
+                        <div class="gas-component" style="background: #2ecc71; width: 1%; font-size: 1.1rem;">H₂: 1%</div>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <h4>Advanced High-Strength Steel</h4>
+                        <p>Minimal H-embrittlement risk. Possible surface oxidation requires flux assistance.</p>
+                    </div>
+                </div>
+                
+                <table class="parameter-table">
+                    <tr>
+                        <th>Gas Mixture</th>
+                        <th>H₂ Concentration</th>
+                        <th>Dew Point</th>
+                        <th>O₂ Level</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td>N₂-5%H₂</td>
+                        <td>5000 ppm</td>
+                        <td>≤ -30°C</td>
+                        <td>≤ 20 ppm</td>
+                        <td>Standard carbon steel</td>
+                    </tr>
+                    <tr>
+                        <td>N₂-3%H₂</td>
+                        <td>3000 ppm</td>
+                        <td>≤ -35°C</td>
+                        <td>≤ 10 ppm</td>
+                        <td>High-strength steel</td>
+                    </tr>
+                    <tr>
+                        <td>N₂-1%H₂</td>
+                        <td>1000 ppm</td>
+                        <td>≤ -40°C</td>
+                        <td>≤ 5 ppm</td>
+                        <td>Advanced high-strength steel</td>
+                    </tr>
+                    <tr>
+                        <td>100% N₂</td>
+                        <td>0 ppm</td>
+                        <td>≤ -50°C</td>
+                        <td>≤ 3 ppm</td>
+                        <td>Embrittlement-critical applications</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Best Practices -->
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Atmosphere Control Best Practices</h3>
+                    <div class="card-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span><strong>Continuous Monitoring:</strong> Install redundant O₂ and H₂O analyzers with automatic alarms at 15 ppm O₂ and -25°C dew point.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <span><strong>Pressure Control:</strong> Maintain 3-8 mbar positive pressure relative to outside atmosphere to prevent air ingress.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-door-closed"></i>
+                        <span><strong>Entry/Exit Seals:</strong> Use labyrinth seals with nitrogen curtains at strip entry/exit points.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-filter"></i>
+                        <span><strong>Gas Purity:</strong> Use industrial grade nitrogen (99.995% min) with on-site purification if needed.</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Quality Assurance Measures</h3>
+                    <div class="card-feature">
+                        <i class="fas fa-search"></i>
+                        <span><strong>Leak Testing:</strong> Quarterly pressure decay tests with helium mass spectrometry for leaks < 10⁻⁶ mbar·L/s.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-vial"></i>
+                        <span><strong>Sampling:</strong> Daily gas samples analyzed by gas chromatography for precise composition verification.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-microscope"></i>
+                        <span><strong>Microstructure Analysis:</strong> Weekly cross-section analysis to monitor intermetallic layer thickness and structure.</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span><strong>Documentation:</strong> Complete traceability with batch records of all process parameters.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hydrogen Embrittlement Warning -->
+            <div class="safety-warning">
+                <h4><i class="fas fa-radiation-alt"></i> Hydrogen Embrittlement Mechanism</h4>
+                <p><strong>Process:</strong> Hydrogen atoms diffuse into steel at high temperature → Collect at grain boundaries and dislocations → Reduce material ductility → Cause delayed cracking under stress.</p>
+                <p><strong>Prevention:</strong> Control furnace atmosphere (low H₂), limit temperature (<600°C for high-strength steels), post-coating baking (200°C for 24h), use modified Al-Mg-Si baths that reduce hydrogen absorption by 40-60%.</p>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="section" id="benefits">
+            <div class="section-header">
+                <i class="fas fa-chart-line"></i>
+                <div>
+                    <h2 class="section-title">Benefits of Aluminized Steel</h2>
+                    <p class="section-subtitle">Why choose aluminized steel over other protective coatings</p>
+                </div>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">5x</div>
+                    <div class="metric-label">Better corrosion resistance than galvanized steel</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">900°C</div>
+                    <div class="metric-label">Heat resistance without scaling</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">50+</div>
+                    <div class="metric-label">Years of service life in atmospheric conditions</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">30%</div>
+                    <div class="metric-label">Cost savings vs stainless steel for similar applications</div>
+                </div>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Heat Resistance</h3>
+                    <p>Aluminized steel can withstand continuous exposure to temperatures up to 450°C and intermittent exposure up to 900°C without significant scaling.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Ideal for exhaust systems and heat exchangers</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Corrosion Protection</h3>
+                    <p>The aluminum coating forms a protective oxide layer that prevents rust, even in harsh industrial and marine environments.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Excellent for coastal construction</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Cost Effectiveness</h3>
+                    <p>Provides the durability of stainless steel at a fraction of the cost, making it ideal for large-scale industrial applications.</p>
+                    <div class="card-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Reduces maintenance and replacement costs</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section class="section" id="applications">
+            <div class="section-header">
+                <i class="fas fa-cogs"></i>
+                <div>
+                    <h2 class="section-title">Industrial Applications</h2>
+                    <p class="section-subtitle">Where aluminized steel delivers superior performance</p>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('automotive', this)">Automotive</button>
+                <button class="tab" onclick="switchTab('construction', this)">Construction</button>
+                <button class="tab" onclick="switchTab('industrial', this)">Industrial</button>
+            </div>
+            
+            <div id="automotive-tab" class="tab-content active">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Exhaust Systems</h3>
+                        <p>Aluminized steel is the material of choice for automotive exhaust systems due to its excellent heat and corrosion resistance.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-car"></i>
+                            <span>Withstands extreme temperature fluctuations</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Resists road salt and moisture</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Heat Shields</h3>
+                        <p>Used to protect sensitive components from engine and exhaust heat in both conventional and electric vehicles.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-fire"></i>
+                            <span>Reflects radiant heat effectively</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-weight"></i>
+                            <span>Lightweight compared to alternatives</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Catalytic Converters</h3>
+                        <p>The housings for catalytic converters often use aluminized steel for its high-temperature performance.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-temperature-high"></i>
+                            <span>Handles exhaust temperatures up to 1000°C</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-gas-pump"></i>
+                            <span>Resists chemical corrosion from exhaust gases</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="construction-tab" class="tab-content">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Roofing & Cladding</h3>
+                        <p>Aluminized steel roofing provides decades of maintenance-free service in all climates.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-building"></i>
+                            <span>50+ year lifespan in most environments</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-cloud-sun"></i>
+                            <span>Reflects solar heat, reducing cooling costs</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Structural Components</h3>
+                        <p>Used in bridges, industrial buildings, and infrastructure where corrosion resistance is critical.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-hard-hat"></i>
+                            <span>High strength-to-weight ratio</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-umbrella"></i>
+                            <span>Superior resistance to atmospheric corrosion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="industrial-tab" class="tab-content">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Heat Exchangers</h3>
+                        <p>Aluminized steel is extensively used in air preheaters, recuperators, and other heat exchange equipment.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Excellent thermal conductivity</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-temperature-high"></i>
+                            <span>Withstands high-temperature cycling</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Furnace Components</h3>
+                        <p>Used for radiant tubes, furnace linings, and other high-temperature furnace parts.</p>
+                        <div class="card-feature">
+                            <i class="fas fa-fire"></i>
+                            <span>Resists oxidation at high temperatures</span>
+                        </div>
+                        <div class="card-feature">
+                            <i class="fas fa-industry"></i>
+                            <span>Extends component life in harsh environments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="section" id="comparison">
+            <div class="section-header">
+                <i class="fas fa-balance-scale"></i>
+                <div>
+                    <h2 class="section-title">Coating Comparison</h2>
+                    <p class="section-subtitle">How aluminized steel compares to other protective coatings</p>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="comparison-card">
+                    <h3>Hot-Dip Galvanized</h3>
+                    <div class="card-feature">
+                        <i class="fas fa-temperature-high" style="color: #F39C12;"></i>
+                        <span><strong>Max Temperature:</strong> 200°C</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-umbrella" style="color: #F39C12;"></i>
+                        <span><strong>Corrosion Resistance:</strong> Good</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-dollar-sign" style="color: #27AE60;"></i>
+                        <span><strong>Cost:</strong> Low</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-industry" style="color: #F39C12;"></i>
+                        <span><strong>Applications:</strong> General construction, fencing</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-card">
+                    <h3>Hot-Dip Aluminized</h3>
+                    <div class="card-feature">
+                        <i class="fas fa-temperature-high" style="color: #27AE60;"></i>
+                        <span><strong>Max Temperature:</strong> 900°C</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-umbrella" style="color: #27AE60;"></i>
+                        <span><strong>Corrosion Resistance:</strong> Excellent</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-dollar-sign" style="color: #F39C12;"></i>
+                        <span><strong>Cost:</strong> Medium</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-industry" style="color: #27AE60;"></i>
+                        <span><strong>Applications:</strong> Exhaust systems, heat exchangers, roofing</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-card">
+                    <h3>Stainless Steel</h3>
+                    <div class="card-feature">
+                        <i class="fas fa-temperature-high" style="color: #27AE60;"></i>
+                        <span><strong>Max Temperature:</strong> 800°C</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-umbrella" style="color: #27AE60;"></i>
+                        <span><strong>Corrosion Resistance:</strong> Excellent</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-dollar-sign" style="color: #E74C3C;"></i>
+                        <span><strong>Cost:</strong> High</span>
+                    </div>
+                    <div class="card-feature">
+                        <i class="fas fa-industry" style="color: #27AE60;"></i>
+                        <span><strong>Applications:</strong> Food processing, chemical, architectural</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">Lifespan Comparison in Marine Environment</h3>
+                <div id="lifespanChart" style="width:100%; height:300px;"></div>
+                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 1rem;">
+                    <i class="fas fa-info-circle"></i> Hot-dip aluminized steel provides significantly longer service life in corrosive environments compared to galvanized steel
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section" id="faq">
+            <div class="section-header">
+                <i class="fas fa-question-circle"></i>
+                <div>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">Common questions about hot-dip aluminizing</p>
+                </div>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Why is hydrogen control critical in the furnace atmosphere?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Hydrogen atoms can diffuse into steel at high temperatures, causing hydrogen embrittlement. This reduces ductility and can lead to delayed cracking under stress. For high-strength steels (>550 MPa), hydrogen levels must be kept below 300 ppm, and for critical applications, below 100 ppm.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What happens if oxygen levels are too high in the furnace?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oxygen reacts with the steel surface to form iron oxides (FeO, Fe₂O₃) before aluminizing. This oxide layer prevents proper wetting and bonding of aluminum to steel, resulting in bare spots, poor adhesion, and coating discontinuities. Oxygen must be kept below 10 ppm, ideally below 5 ppm.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How does silicon in the aluminum bath affect coating formation?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Silicon (9-11% in Type 1 coatings) reduces the growth of the brittle Fe₂Al₅ phase and promotes the formation of FeAl₃. This results in thinner, more ductile intermetallic layers with better adhesion and formability. Silicon also lowers the melting point of the aluminum bath.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What is the optimal cooling rate after dipping?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cooling rate significantly affects microstructure. For thin gauges (<0.050"), rapid quenching (40-60°C/s) produces fine grains with excellent adhesion. For thick gauges (>0.090"), slower cooling (15-25°C/s) prevents cracking. Controlled cooling is essential to optimize coating properties.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How are furnace atmosphere parameters monitored and controlled?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Modern systems use zirconia oxygen sensors (1 ppm resolution), electrolytic hygrometers (dew point measurement), and gas chromatography for hydrogen analysis. Redundant sensors with automatic alarms and control loops maintain optimal conditions. Positive pressure (3-8 mbar) prevents air ingress.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer with Disclosure -->
+        <footer>
+            <div class="footer-content">
+                <div class="disclosure">
+                    <h3><i class="fas fa-robot"></i> AI-Generated Content Disclosure</h3>
+                    <p>This webpage was created by artificial intelligence and is based solely on publicly available, accredited knowledge about hot-dip aluminizing processes. The information presented here is for educational purposes only and should not be used for engineering specifications or commercial applications without verification from primary sources.</p>
+                    <p>The content synthesizes information from publicly accessible industry standards, technical publications, and educational resources related to metallurgical coating processes.</p>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>© 2023 Hot-Dip Aluminizing Educational Resource. All rights reserved.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.8rem;">This resource is based on ASTM A463 standards and industry best practices.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLifespanChart();
+            initializeThermalChart();
+            initializeLayerGrowthChart();
+            
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-links a, .cta-button[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if(targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Initialize first tab in each section
+            document.querySelectorAll('.tabs').forEach(tabContainer => {
+                const firstTab = tabContainer.querySelector('.tab.active');
+                if(firstTab) {
+                    const tabName = firstTab.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    switchTab(tabName, firstTab);
+                }
+            });
+            
+            // Initialize first FAQ as open
+            document.querySelector('.faq-item').classList.add('active');
+            document.querySelector('.faq-item .faq-answer').style.display = 'block';
+            
+            // Add hover effects to gas mixture visualizations
+            document.querySelectorAll('.gas-component').forEach(component => {
+                component.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.zIndex = '2';
+                });
+                component.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = '1';
+                });
+            });
+        });
+        
+        // Thermal Dynamics Chart
+        function initializeThermalChart() {
+            const gauges = [0.018, 0.024, 0.036, 0.048, 0.064, 0.090, 0.130];
+            const temps = [720, 715, 710, 705, 700, 695, 690];
+            const times = [5, 6, 7, 8, 9, 12, 15];
+            const riskLow = temps.map(t => t + 15);
+            const riskHigh = temps.map(t => t - 15);
+            
+            const data = [
+                {
+                    x: gauges,
+                    y: temps,
+                    mode: 'lines+markers+text',
+                    name: 'Optimal Temperature',
+                    line: {color: '#27ae60', width: 4},
+                    marker: {size: 10},
+                    text: temps.map(t => t + '°C'),
+                    textposition: 'top center',
+                    textfont: {size: 12, color: '#27ae60'}
+                },
+                {
+                    x: gauges,
+                    y: times,
+                    mode: 'lines+markers',
+                    name: 'Dipping Time',
+                    yaxis: 'y2',
+                    line: {color: '#3498db', width: 4, dash: 'dash'},
+                    marker: {size: 8}
+                },
+                {
+                    x: gauges,
+                    y: riskLow,
+                    mode: 'lines',
+                    name: 'Risk Zone (High)',
+                    line: {color: '#e74c3c', width: 1, dash: 'dot'},
+                    fillcolor: 'rgba(231, 76, 60, 0.1)',
+                    fill: 'tonexty'
+                },
+                {
+                    x: gauges,
+                    y: riskHigh,
+                    mode: 'lines',
+                    name: 'Risk Zone (Low)',
+                    line: {color: '#e74c3c', width: 1, dash: 'dot'},
+                    fill: 'tonexty'
+                }
+            ];
+            
+            const layout = {
+                title: {
+                    text: 'Optimal Process Parameters vs Sheet Gauge',
+                    font: {size: 18, color: '#2c3e50'}
+                },
+                xaxis: {
+                    title: {text: 'Sheet Thickness (inches)', font: {size: 14}},
+                    gridcolor: '#f0f0f0',
+                    tickvals: gauges,
+                    ticktext: gauges.map(g => g.toFixed(3) + '"'),
+                    tickfont: {size: 12}
+                },
+                yaxis: {
+                    title: {text: 'Bath Temperature (°C)', font: {size: 14}},
+                    gridcolor: '#f0f0f0',
+                    range: [670, 740],
+                    tickfont: {size: 12}
+                },
+                yaxis2: {
+                    title: {text: 'Dipping Time (seconds)', font: {size: 14}},
+                    overlaying: 'y',
+                    side: 'right',
+                    gridcolor: '#f0f0f0',
+                    range: [3, 18],
+                    tickfont: {size: 12}
+                },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: {color: '#333'},
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {
+                    x: 0.02,
+                    y: 0.98,
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    bordercolor: '#ddd',
+                    borderwidth: 1
+                },
+                annotations: [
+                    {
+                        x: 0.018,
+                        y: 730,
+                        text: 'Thin Gauges:<br>Rapid heating risk',
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 0,
+                        ay: -40,
+                        font: {size: 12, color: '#666'},
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#ddd',
+                        borderwidth: 1
+                    },
+                    {
+                        x: 0.130,
+                        y: 685,
+                        text: 'Thick Gauges:<br>Heat sink effect',
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 0,
+                        ay: 40,
+                        font: {size: 12, color: '#666'},
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#ddd',
+                        borderwidth: 1
+                    }
+                ]
+            };
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d']
+            };
+            
+            Plotly.newPlot('thermalChart', data, layout, config);
+        }
+        
+        // Layer Growth Chart
+        function initializeLayerGrowthChart() {
+            const time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20];
+            const thickness700 = time.map(t => Math.min(15, 0.5 + t * 0.8));
+            const thickness730 = time.map(t => Math.min(18, 0.5 + t * 1.1));
+            const thickness680 = time.map(t => Math.min(12, 0.5 + t * 0.6));
+            
+            const data = [
+                {
+                    x: time,
+                    y: thickness700,
+                    mode: 'lines+markers',
+                    name: '700°C Bath',
+                    line: {color: '#3498db', width: 3},
+                    marker: {size: 6}
+                },
+                {
+                    x: time,
+                    y: thickness730,
+                    mode: 'lines+markers',
+                    name: '730°C Bath',
+                    line: {color: '#e74c3c', width: 3},
+                    marker: {size: 6}
+                },
+                {
+                    x: time,
+                    y: thickness680,
+                    mode: 'lines+markers',
+                    name: '680°C Bath',
+                    line: {color: '#27ae60', width: 3},
+                    marker: {size: 6}
+                }
+            ];
+            
+            const layout = {
+                title: {
+                    text: 'Intermetallic Layer Growth vs Dipping Time',
+                    font: {size: 16, color: '#2c3e50'}
+                },
+                xaxis: {
+                    title: {text: 'Dipping Time (seconds)', font: {size: 14}},
+                    gridcolor: '#f0f0f0'
+                },
+                yaxis: {
+                    title: {text: 'Layer Thickness (μm)', font: {size: 14}},
+                    gridcolor: '#f0f0f0',
+                    range: [0, 20]
+                },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: {color: '#2c3e50'},
+                showlegend: true,
+                legend: {
+                    x: 0.02,
+                    y: 0.98,
+                    bgcolor: 'rgba(255, 255, 255, 0.8)'
+                },
+                shapes: [
+                    {
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 5,
+                        x1: 20,
+                        y1: 8,
+                        fillcolor: 'rgba(39, 174, 96, 0.1)',
+                        line: {width: 0},
+                        layer: 'below'
+                    }
+                ],
+                annotations: [
+                    {
+                        x: 15,
+                        y: 7.5,
+                        text: 'Optimal Range: 5-8 μm',
+                        showarrow: false,
+                        font: {size: 12, color: '#27ae60'},
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#27ae60',
+                        borderwidth: 1
+                    }
+                ]
+            };
+            
+            Plotly.newPlot('layerGrowthChart', data, layout, {responsive: true});
+        }
+        
+        // Lifespan Comparison Chart
+        function initializeLifespanChart() {
+            const materials = ['Galvanized Steel', 'Aluminized Steel', 'Stainless Steel 304'];
+            const lifespan = [15, 50, 75];
+            const colors = ['#F39C12', '#3498DB', '#95A5A6'];
+            
+            const data = [{
+                x: materials,
+                y: lifespan,
+                type: 'bar',
+                marker: {
+                    color: colors
+                },
+                text: lifespan.map(y => y + ' years'),
+                textposition: 'auto'
+            }];
+            
+            const layout = {
+                title: {
+                    text: 'Estimated Service Life in Marine Atmosphere',
+                    font: {size: 16, color: '#2C3E50'}
+                },
+                xaxis: {
+                    title: {text: 'Material', font: {size: 14}},
+                    tickfont: {size: 12}
+                },
+                yaxis: {
+                    title: {text: 'Years', font: {size: 14}},
+                    range: [0, 80],
+                    gridcolor: '#f0f0f0'
+                },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: {color: '#2C3E50'},
+                showlegend: false
+            };
+            
+            Plotly.newPlot('lifespanChart', data, layout, {responsive: true});
+        }
+        
+        // Tab switching function
+        function switchTab(tabName, element) {
+            // Remove active class from all tabs in this container
+            const tabContainer = element.closest('.tabs');
+            tabContainer.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            element.classList.add('active');
+            
+            // Hide all tab contents in this section
+            const section = element.closest('.section');
+            const tabContents = section.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const targetTab = section.querySelector(`#${tabName}-tab`);
+            if(targetTab) {
+                targetTab.classList.add('active');
+            }
+        }
+        
+        // FAQ toggle function
+        function toggleFAQ(element) {
+            const faqItem = element.closest('.faq-item');
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQs in this container
+            const faqContainer = element.closest('.faq-container');
+            faqContainer.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.faq-answer').style.display = 'none';
+            });
+            
+            // If it wasn't active, open this one
+            if(!isActive) {
+                faqItem.classList.add('active');
+                faqItem.querySelector('.faq-answer').style.display = 'block';
+            }
+        }
+        
+        // Update charts on window resize
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('lifespanChart');
+            Plotly.Plots.resize('thermalChart');
+            Plotly.Plots.resize('layerGrowthChart');
+        });
+    </script>
+</body>
+</html>

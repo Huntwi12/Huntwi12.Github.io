@@ -120,10 +120,12 @@ a {
     margin-top: 10px;
 }
 
-.dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+    .dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 }
 
 .dropdown-menu li a {
@@ -159,7 +161,7 @@ a {
 /* ==================== Hero Section ==================== */
 .hero {
     position: relative;
-    height: 600px;
+    height: 750px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1600,6 +1602,7 @@ a {
 @media (max-width: 768px) {
     .menu-toggle {
         display: flex;
+        z-index: 20;
     }
 
     .nav-menu {
@@ -1612,12 +1615,21 @@ a {
         gap: 0;
         max-height: 0;
         overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
         transition: var(--transition);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 15;
     }
 
     .nav-menu.active {
-        max-height: 500px;
+        max-height: 520px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
     }
 
     .nav-menu li {

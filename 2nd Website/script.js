@@ -12,10 +12,21 @@ capabilityCards.forEach(card => {
 const menuToggle = document.getElementById('menuToggle');
 const navMenu = document.getElementById('navMenu');
 
-if (menuToggle) {
+const closeMobileMenu = () => {
+    if (navMenu) {
+        navMenu.classList.remove('active');
+    }
+    if (menuToggle) {
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+};
+
+if (menuToggle && navMenu) {
     menuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        const isActive = navMenu.classList.toggle('active');
         menuToggle.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', String(isActive));
     });
 }
 
@@ -46,10 +57,7 @@ dropdowns.forEach(dropdown => {
 // Close menu when a non-dropdown link is clicked
 const navLinks = document.querySelectorAll('.nav-menu > li:not(.dropdown) > .nav-link');
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        menuToggle.classList.remove('active');
-    });
+    link.addEventListener('click', closeMobileMenu);
 });
 
 // Close dropdowns when clicking outside
@@ -66,8 +74,7 @@ const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
 dropdownLinks.forEach(link => {
     link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
-            navMenu.classList.remove('active');
-            menuToggle.classList.remove('active');
+            closeMobileMenu();
             dropdowns.forEach(dropdown => {
                 dropdown.classList.remove('active');
             });

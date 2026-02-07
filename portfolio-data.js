@@ -134,7 +134,7 @@ const portfolioData = {
   works: [
     {
       name: 'Favorite PS1 Games',
-      link: '1st Project/index.html',
+      link: '1st Project/Index.HTML',
       description: 'Website I made with HTML & CSS took me about 4 hours.',
       time: '4 hours'
     },
